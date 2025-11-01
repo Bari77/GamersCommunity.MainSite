@@ -35,8 +35,7 @@ namespace MainSite.Consumer
                     {
                         #region Initialize app settings
 
-                        var loggerSettingsSection = context.Configuration.GetSection("LoggerSettings");
-                        var loggerSettings = loggerSettingsSection.Get<LoggerSettings>()
+                        var loggerSettings = context.Configuration.GetSection("LoggerSettings").Get<LoggerSettings>()
                             ?? throw new InternalServerErrorException("Can't parse LoggerSettings section");
 
                         #endregion
@@ -53,8 +52,8 @@ namespace MainSite.Consumer
                     .ConfigureServices((context, services) =>
                     {
                         // Bind configuration sections to strongly-typed settings
-                        services.Configure<RabbitMQSettings>(context.Configuration.GetSection("RabbitMQ"));
-                        services.Configure<AppSettings>(context.Configuration.GetSection("AppSettings"));
+                        services.AddOptions<RabbitMQSettings>().Bind(context.Configuration.GetSection("RabbitMQ")).ValidateOnStart();
+                        services.AddOptions<AppSettings>().Bind(context.Configuration.GetSection("AppSettings")).ValidateOnStart();
 
                         // Register EF Core DbContext
                         services.AddDbContext<GamersCommunityDbContext>();
@@ -62,6 +61,7 @@ namespace MainSite.Consumer
                         // Register application services
                         services.AddSingleton<Serilog.ILogger>(sp => Log.Logger);
                         services.AddScoped<ITableService, CountriesService>();
+                        services.AddScoped<ITableService, GameTypesService>();
                         services.AddScoped<TableRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
 

@@ -15,6 +15,4 @@ public partial class Locale : IKeyTable
     public string Lcid { get; set; } = null!;
 
     public string Entitled { get; set; } = null!;
-
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

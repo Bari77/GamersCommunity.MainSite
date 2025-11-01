@@ -333,40 +333,17 @@ public partial class GamersCommunityDbContext : DbContext
 
             entity.HasIndex(e => e.Mail, "IX_Users").IsUnique();
 
-            entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.Avatar)
-                .HasMaxLength(255)
-                .HasDefaultValue("http://bariserv.net:3000/bfg/avatars/default.png");
+            entity.Property(e => e.AvatarUrl).HasMaxLength(255);
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Firstname).HasMaxLength(255);
-            entity.Property(e => e.Hashcode).HasColumnType("numeric(4, 0)");
+            entity.Property(e => e.Discriminator).HasColumnType("numeric(4, 0)");
             entity.Property(e => e.LastConnection).HasColumnType("datetime");
-            entity.Property(e => e.Lastname).HasMaxLength(255);
             entity.Property(e => e.Mail).HasMaxLength(255);
-            entity.Property(e => e.MailHash)
-                .HasMaxLength(255)
-                .IsFixedLength();
             entity.Property(e => e.ModificationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.NumAddress).HasMaxLength(255);
-            entity.Property(e => e.Password).HasMaxLength(255);
-            entity.Property(e => e.Pseudo).HasMaxLength(255);
-
-            entity.HasOne(d => d.IdCityNavigation).WithMany(p => p.Users)
-                .HasForeignKey(d => d.IdCity)
-                .HasConstraintName("FK_Users_City");
-
-            entity.HasOne(d => d.IdLocaleNavigation).WithMany(p => p.Users)
-                .HasForeignKey(d => d.IdLocale)
-                .HasConstraintName("FK_Users_Locales");
-
-            entity.HasOne(d => d.IdRankNavigation).WithMany(p => p.Users)
-                .HasForeignKey(d => d.IdRank)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Users_Ranks");
+            entity.Property(e => e.Username).HasMaxLength(255);
         });
 
         OnModelCreatingPartial(modelBuilder);

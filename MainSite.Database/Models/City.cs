@@ -19,6 +19,4 @@ public partial class City : IKeyTable
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
     public virtual Country IdCountryNavigation { get; set; } = null!;
-
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

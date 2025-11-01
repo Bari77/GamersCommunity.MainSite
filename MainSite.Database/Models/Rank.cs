@@ -15,6 +15,4 @@ public partial class Rank : IKeyTable
     public string Color { get; set; } = null!;
 
     public virtual ICollection<RankRight> RankRights { get; set; } = new List<RankRight>();
-
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }
