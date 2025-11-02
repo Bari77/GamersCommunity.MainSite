@@ -73,6 +73,11 @@ namespace MainSite.Consumer.Services
                         return JsonSafe.Serialize(await LoginAsync(user, ct));
                     }
 
+                    if (string.IsNullOrEmpty(info.Username))
+                    {
+                        throw new BadRequestException("Username mandatory");
+                    }
+
                     user = new()
                     {
                         IdKeycloak = info.IdKeycloak,
