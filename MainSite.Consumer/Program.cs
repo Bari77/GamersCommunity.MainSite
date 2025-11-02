@@ -62,6 +62,7 @@ namespace MainSite.Consumer
                         services.AddSingleton<Serilog.ILogger>(sp => Log.Logger);
                         services.AddScoped<ITableService, CountriesService>();
                         services.AddScoped<ITableService, GameTypesService>();
+                        services.AddScoped<ITableService, GamesService>();
                         services.AddScoped<TableRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
 
