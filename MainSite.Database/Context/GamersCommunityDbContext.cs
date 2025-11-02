@@ -337,7 +337,7 @@ public partial class GamersCommunityDbContext : DbContext
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Discriminator).HasColumnType("numeric(4, 0)");
+            entity.Property(e => e.Discriminator).HasMaxLength(4);
             entity.Property(e => e.LastConnection).HasColumnType("datetime");
             entity.Property(e => e.Mail).HasMaxLength(255);
             entity.Property(e => e.ModificationDate)

@@ -12,7 +12,7 @@ public partial class User : IKeyTable
 
     public string Username { get; set; } = null!;
 
-    public decimal Discriminator { get; set; }
+    public string Discriminator { get; set; } = null!;
 
     public string AvatarUrl { get; set; } = null!;
 

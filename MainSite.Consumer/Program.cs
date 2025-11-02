@@ -61,8 +61,9 @@ namespace MainSite.Consumer
                         // Register application services
                         services.AddSingleton<Serilog.ILogger>(sp => Log.Logger);
                         services.AddScoped<ITableService, CountriesService>();
-                        services.AddScoped<ITableService, GameTypesService>();
                         services.AddScoped<ITableService, GamesService>();
+                        services.AddScoped<ITableService, GameTypesService>();
+                        services.AddScoped<ITableService, UsersService>();
                         services.AddScoped<TableRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
 

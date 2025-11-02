@@ -17,18 +17,11 @@ namespace MainSite.Consumer.Services
     /// in <see cref="GenericTableService{TContext, TEntity}"/>, while associating them with the logical table name <c>"Countries"</c>.
     /// </para>
     /// </remarks>
-    public class CountriesService : GenericTableService<GamersCommunityDbContext, Country>
+    /// <param name="context">
+    /// The database context used to access the <c>Countries</c> table.
+    /// Typically injected by dependency injection.
+    /// </param>
+    public class CountriesService(GamersCommunityDbContext context) : GenericTableService<GamersCommunityDbContext, Country>(context, "Countries")
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CountriesService"/> class.
-        /// </summary>
-        /// <param name="context">
-        /// The database context used to access the <c>Countries</c> table.
-        /// Typically injected by dependency injection.
-        /// </param>
-        public CountriesService(GamersCommunityDbContext context)
-            : base(context, "Countries")
-        {
-        }
     }
 }
