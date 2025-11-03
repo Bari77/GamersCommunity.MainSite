@@ -66,6 +66,7 @@ namespace MainSite.Consumer
                         services.AddScoped<ITableService, EventsUsersInterestsService>();
                         services.AddScoped<ITableService, EventsUsersStatusesService>();
                         services.AddScoped<ITableService, FriendsService>();
+                        services.AddScoped<ITableService, FriendStatusesService>();
                         services.AddScoped<ITableService, GamesService>();
                         services.AddScoped<ITableService, GameTypesService>();
                         services.AddScoped<ITableService, MessagesService>();
