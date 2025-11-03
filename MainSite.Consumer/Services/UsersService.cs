@@ -70,6 +70,12 @@ namespace MainSite.Consumer.Services
 
                     if (user != null)
                     {
+                        if (await Context.Banneds
+                            .Where(w => w.IdUserBan == user.Id && w.BeginDate <= DateTime.UtcNow && DateTime.UtcNow <= w.EndDate)
+                            .AnyAsync(ct))
+                        {
+                            throw new BadRequestException("Banned account");
+                        }
                         return JsonSafe.Serialize(await LoginAsync(user, ct));
                     }
 
