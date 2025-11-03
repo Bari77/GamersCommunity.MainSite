@@ -14,14 +14,14 @@ namespace MainSite.Consumer.Services
     /// </para>
     /// <para>
     /// It exposes all generic CRUD operations (List, Get, Update, Delete, etc.) implemented
-    /// in <see cref="GenericTableService{TContext, TEntity}"/>, while associating them with the logical table name <c>"EventsUsersStatus"</c>.
+    /// in <see cref="GenericTableService{TContext, TEntity}"/>, while associating them with the logical table name <c>"EventsUsersStatuses"</c>.
     /// </para>
     /// </remarks>
     /// <param name="context">
-    /// The database context used to access the <c>EventsUsersStatus</c> table.
+    /// The database context used to access the <c>EventsUsersStatuses</c> table.
     /// Typically injected by dependency injection.
     /// </param>
-    public class EventsUsersStatusService(GamersCommunityDbContext context) : GenericTableService<GamersCommunityDbContext, EventsUsersStatus>(context, "EventsUsersStatus")
+    public class EventsUsersStatusesService(GamersCommunityDbContext context) : GenericTableService<GamersCommunityDbContext, EventsUsersStatus>(context, "EventsUsersStatuses")
     {
     }
 }

@@ -26,13 +26,11 @@ public partial class GamersCommunityDbContext : DbContext
 
     public virtual DbSet<Friend> Friends { get; set; }
 
-    public virtual DbSet<FriendRequestStatus> FriendRequestStatuses { get; set; }
+    public virtual DbSet<FriendStatus> FriendStatuses { get; set; }
 
     public virtual DbSet<Game> Games { get; set; }
 
     public virtual DbSet<GameType> GameTypes { get; set; }
-
-    public virtual DbSet<Locale> Locales { get; set; }
 
     public virtual DbSet<Message> Messages { get; set; }
 
@@ -191,14 +189,15 @@ public partial class GamersCommunityDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Friend_UsersReceive");
 
-            entity.HasOne(d => d.IdRequestFriendStatusNavigation).WithMany(p => p.Friends)
-                .HasForeignKey(d => d.IdRequestFriendStatus)
+            entity.HasOne(d => d.IdFriendStatusNavigation).WithMany(p => p.Friends)
+                .HasForeignKey(d => d.IdFriendStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Friend_FriendRequestStatus");
         });
 
-        modelBuilder.Entity<FriendRequestStatus>(entity =>
+        modelBuilder.Entity<FriendStatus>(entity =>
         {
-            entity.ToTable("FriendRequestStatus");
+            entity.ToTable("FriendStatus");
 
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
@@ -235,19 +234,6 @@ public partial class GamersCommunityDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Entitled).HasMaxLength(255);
-            entity.Property(e => e.ModificationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<Locale>(entity =>
-        {
-            entity.Property(e => e.Code).HasMaxLength(50);
-            entity.Property(e => e.CreationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Entitled).HasMaxLength(150);
-            entity.Property(e => e.Lcid).HasMaxLength(50);
             entity.Property(e => e.ModificationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

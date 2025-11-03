@@ -2,7 +2,7 @@ using GamersCommunity.Core.Database;
 
 namespace MainSite.Database.Models;
 
-public partial class Locale : IKeyTable
+public partial class FriendStatus : IKeyTable
 {
     public int Id { get; set; }
 
@@ -10,9 +10,7 @@ public partial class Locale : IKeyTable
 
     public DateTime ModificationDate { get; set; }
 
-    public string Code { get; set; } = null!;
-
-    public string Lcid { get; set; } = null!;
-
     public string Entitled { get; set; } = null!;
+
+    public virtual ICollection<Friend> Friends { get; set; } = new List<Friend>();
 }

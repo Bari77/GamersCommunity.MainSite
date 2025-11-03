@@ -14,11 +14,11 @@ public partial class Friend : IKeyTable
 
     public int IdFriendReceive { get; set; }
 
-    public int? IdRequestFriendStatus { get; set; }
+    public int IdFriendStatus { get; set; }
 
     public virtual User IdFriendAskingNavigation { get; set; } = null!;
 
     public virtual User IdFriendReceiveNavigation { get; set; } = null!;
 
-    public virtual FriendRequestStatus? IdRequestFriendStatusNavigation { get; set; }
+    public virtual FriendStatus IdFriendStatusNavigation { get; set; } = null!;
 }
