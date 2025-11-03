@@ -73,15 +73,15 @@ namespace MainSite.Consumer.Services
                         return JsonSafe.Serialize(await LoginAsync(user, ct));
                     }
 
-                    if (string.IsNullOrEmpty(info.Username))
+                    if (string.IsNullOrEmpty(info.Nickname))
                     {
-                        throw new BadRequestException("Username mandatory");
+                        throw new BadRequestException("Nickname mandatory");
                     }
 
                     user = new()
                     {
                         IdKeycloak = info.IdKeycloak,
-                        Username = info.Username,
+                        Nickname = info.Nickname,
                     };
                     return JsonSafe.Serialize(await SignupAsync(user, ct));
             }
@@ -90,7 +90,7 @@ namespace MainSite.Consumer.Services
         }
 
         /// <summary>
-        /// Creates a new user account in the database if no existing account matches the provided username and discriminator.
+        /// Creates a new user account in the database if no existing account matches the provided nickname and discriminator.
         /// This method generates a unique discriminator (4-digit numeric code) and a random avatar before saving the user.
         /// Once created, the user is automatically logged in via <see cref="LoginAsync(User, CancellationToken)"/>.
         /// </summary>
@@ -99,13 +99,13 @@ namespace MainSite.Consumer.Services
         /// <returns>The newly created and logged-in <see cref="User"/> entity.</returns>
         private async Task<User> SignupAsync(User entity, CancellationToken ct = default)
         {
-            UserValidator.ValidateUsername(entity.Username);
+            UserValidator.ValidateNickname(entity.Nickname);
 
             do
             {
                 entity.Discriminator = GetRandomDiscriminator();
             }
-            while (await Context.Users.AnyAsync(u => u.Username == entity.Username && u.Discriminator == entity.Discriminator, ct));
+            while (await Context.Users.AnyAsync(u => u.Nickname == entity.Nickname && u.Discriminator == entity.Discriminator, ct));
 
             entity.AvatarUrl = GetRandomAvatar();
             entity.CreationDate = DateTime.UtcNow;

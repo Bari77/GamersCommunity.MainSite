@@ -12,6 +12,6 @@
         /// <summary>
         /// Choosed username
         /// </summary>
-        public string? Username { get; set; }
+        public string? Nickname { get; set; }
     }
 }

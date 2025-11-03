@@ -10,7 +10,7 @@ public partial class User : IKeyTable
 
     public DateTime ModificationDate { get; set; }
 
-    public string Username { get; set; } = null!;
+    public string Nickname { get; set; } = null!;
 
     public string Discriminator { get; set; } = null!;
 

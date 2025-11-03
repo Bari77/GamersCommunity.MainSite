@@ -343,7 +343,7 @@ public partial class GamersCommunityDbContext : DbContext
             entity.Property(e => e.ModificationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Username).HasMaxLength(255);
+            entity.Property(e => e.Nickname).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

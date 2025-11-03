@@ -9,23 +9,23 @@ namespace MainSite.Consumer.Validators
     public static class UserValidator
     {
         /// <summary>
-        /// Validates a username to ensure it only contains alphabetical characters (A–Z, a–z)
+        /// Validates a nickname to ensure it only contains alphabetical characters (A–Z, a–z)
         /// and does not exceed 50 characters in length.
         /// </summary>
-        /// <param name="username">The username to validate.</param>
+        /// <param name="nickname">The nickname to validate.</param>
         /// <exception cref="BadRequestException">
-        /// Thrown when the username is null, empty, too long, or contains invalid characters.
+        /// Thrown when the nickname is null, empty, too long, or contains invalid characters.
         /// </exception>
-        public static void ValidateUsername(string? username)
+        public static void ValidateNickname(string? nickname)
         {
-            if (string.IsNullOrWhiteSpace(username))
-                throw new BadRequestException("Username cannot be empty.");
+            if (string.IsNullOrWhiteSpace(nickname))
+                throw new BadRequestException("Nickname cannot be empty.");
 
-            if (username.Length > 50)
-                throw new BadRequestException("Username must not exceed 50 characters.");
+            if (nickname.Length > 50)
+                throw new BadRequestException("Nickname must not exceed 50 characters.");
 
-            if (!Regex.IsMatch(username, @"^[A-Za-z0-9_-]+$"))
-                throw new BadRequestException("Username must contain only letters (A–Z, a–z).");
+            if (!Regex.IsMatch(nickname, @"^[A-Za-z0-9_-]+$"))
+                throw new BadRequestException("Nickname must contain only letters (A–Z, a–z).");
         }
     }
 }
