@@ -67,6 +67,7 @@ namespace MainSite.Consumer
                         services.AddScoped<ITableService, EventsUsersStatusService>();
                         services.AddScoped<ITableService, GamesService>();
                         services.AddScoped<ITableService, GameTypesService>();
+                        services.AddScoped<ITableService, MessagesService>();
                         services.AddScoped<ITableService, UsersService>();
                         services.AddScoped<TableRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
