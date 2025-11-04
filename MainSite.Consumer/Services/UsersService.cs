@@ -147,7 +147,7 @@ namespace MainSite.Consumer.Services
         private string GetRandomAvatar()
         {
             lock (Random)
-                return AppSettings.AvatarBaseUrl + "/" + Random.Next(AppSettings.MinRangeAvatarId, AppSettings.MaxRangeAvatarId + 1) + ".png";
+                return AppSettings.AvatarSettings.AvatarBaseUrl + "/" + Random.Next(AppSettings.AvatarSettings.MinRangeAvatarId, AppSettings.AvatarSettings.MaxRangeAvatarId + 1) + ".png";
         }
 
         /// <summary>

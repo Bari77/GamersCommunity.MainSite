@@ -3,6 +3,11 @@
     "Database": "Persist Security Info=False;Trusted_Connection=true;Server=localhost;Initial Catalog=GamersCommunity;TrustServerCertificate=True;"
   },
   "AppSettings": {
+    "AvatarSettings": {
+      "AvatarBaseUrl": "https://host.bariserv.net/GamersCommunity/Avatars",
+      "MinRangeAvatarId": 1,
+      "MaxRangeAvatarId": 12
+    }
   },
   "RabbitMQ": {
     "Hostname": "localhost",
