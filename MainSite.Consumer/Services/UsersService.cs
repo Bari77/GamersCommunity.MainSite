@@ -62,7 +62,7 @@ namespace MainSite.Consumer.Services
                 case "Load":
                     if (string.IsNullOrEmpty(data))
                     {
-                        throw new BadRequestException("Data mandatory");
+                        throw new BadRequestException("MANDATORY", "Data mandatory");
                     }
 
                     var info = ConsumerParamParser.ToObject<LoadRequest>(data);
@@ -74,14 +74,14 @@ namespace MainSite.Consumer.Services
                             .Where(w => w.IdUserBan == user.Id && w.BeginDate <= DateTime.UtcNow && DateTime.UtcNow <= w.EndDate)
                             .AnyAsync(ct))
                         {
-                            throw new BadRequestException("Banned account");
+                            throw new BadRequestException("BANNED", "Banned account");
                         }
                         return JsonSafe.Serialize(await LoginAsync(user, ct));
                     }
 
                     if (string.IsNullOrEmpty(info.Nickname))
                     {
-                        throw new BadRequestException("Nickname mandatory");
+                        throw new BadRequestException("NICKNAME_MANDATORY", "Nickname mandatory");
                     }
 
                     user = new()

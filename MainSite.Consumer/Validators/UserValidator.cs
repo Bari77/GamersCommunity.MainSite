@@ -19,13 +19,13 @@ namespace MainSite.Consumer.Validators
         public static void ValidateNickname(string? nickname)
         {
             if (string.IsNullOrWhiteSpace(nickname))
-                throw new BadRequestException("Nickname cannot be empty.");
+                throw new BadRequestException("EMPTY_STRING", "Nickname cannot be empty.");
 
             if (nickname.Length > 50)
-                throw new BadRequestException("Nickname must not exceed 50 characters.");
+                throw new BadRequestException("TOO_LONG_STRING", "Nickname must not exceed 50 characters.");
 
             if (!Regex.IsMatch(nickname, @"^[A-Za-z0-9_-]+$"))
-                throw new BadRequestException("Nickname must contain only letters (A–Z, a–z).");
+                throw new BadRequestException("PATTERN_STRING", "Nickname must contain only letters (A–Z, a–z).");
         }
     }
 }
