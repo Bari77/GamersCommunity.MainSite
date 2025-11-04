@@ -10,6 +10,10 @@
         /// </summary>
         public required Guid IdKeycloak { get; set; }
         /// <summary>
+        /// Keycloak mail
+        /// </summary>
+        public string? Mail { get; set; }
+        /// <summary>
         /// Choosed username
         /// </summary>
         public string? Nickname { get; set; }

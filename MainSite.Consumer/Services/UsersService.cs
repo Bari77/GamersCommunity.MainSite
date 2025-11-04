@@ -87,6 +87,7 @@ namespace MainSite.Consumer.Services
                     user = new()
                     {
                         IdKeycloak = info.IdKeycloak,
+                        Mail = info.Mail,
                         Nickname = info.Nickname,
                     };
                     return JsonSafe.Serialize(await SignupAsync(user, ct));
