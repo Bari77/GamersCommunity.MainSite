@@ -1,9 +1,9 @@
 ﻿using GamersCommunity.Core.Tests;
-using MainSite.Consumer.Services;
+using MainSite.Consumer.Services.Data;
 using MainSite.Database.Context;
 using MainSite.Database.Models;
 
-namespace MainSite.Tests.Countries
+namespace MainSite.Tests.Services.Data
 {
     public class CountriesTests : GenericServiceTests<GamersCommunityDbContext, CountriesService, Country>, IClassFixture<TestsFixture>
     {

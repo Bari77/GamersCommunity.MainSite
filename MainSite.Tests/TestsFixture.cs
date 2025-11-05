@@ -1,4 +1,4 @@
-﻿using MainSite.Consumer.Services;
+﻿using MainSite.Consumer.Services.Tables;
 using MainSite.Database.Context;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,7 +2,7 @@
 using MainSite.Database.Context;
 using MainSite.Database.Models;
 
-namespace MainSite.Consumer.Services
+namespace MainSite.Consumer.Services.Data
 {
     /// <summary>
     /// Specialized table service for handling <see cref="City"/> entities.

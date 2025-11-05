@@ -10,7 +10,7 @@ using MainSite.Database.Context;
 using MainSite.Database.Models;
 using Microsoft.Extensions.Options;
 
-namespace MainSite.Consumer.Services
+namespace MainSite.Consumer.Services.Data
 {
     /// <summary>
     /// Specialized table service for handling <see cref="User"/> entities.
