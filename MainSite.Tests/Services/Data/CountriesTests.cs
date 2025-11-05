@@ -5,31 +5,13 @@ using MainSite.Database.Models;
 
 namespace MainSite.Tests.Services.Data
 {
-    public class CountriesTests : GenericServiceTests<GamersCommunityDbContext, CountriesService, Country>, IClassFixture<TestsFixture>
+    public class CountriesTests(TestsDataFixture fixture) : GenericDataServiceTests<GamersCommunityDbContext, CountriesService, Country>, IClassFixture<TestsDataFixture>
     {
-        public CountriesTests(TestsFixture fixture) : base(fixture._countriesService)
-        {
-            fixture._testDbContext.AddRange(GetFakeData());
-            fixture._testDbContext.SaveChanges();
-        }
+        protected override CountriesService CreateService() => fixture.CreateCountriesService();
 
         protected override List<Country> GetFakeData()
         {
-            return
-            [
-                new() {
-                    Id = 1,
-                    CreationDate = DateTime.Now,
-                    ModificationDate = DateTime.Now,
-                    Name = "Country 1",
-                },
-                new() {
-                    Id = 2,
-                    CreationDate = DateTime.Now,
-                    ModificationDate = DateTime.Now,
-                    Name = "Country 2",
-                },
-            ];
+            return [];
         }
 
         protected override Country GetNewEntity()

@@ -9,19 +9,19 @@ namespace MainSite.Consumer.Services.Data
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This service inherits from <see cref="GenericTableService{TContext, TEntity}"/>,
+    /// This service inherits from <see cref="GenericDataService{TContext, TEntity}"/>,
     /// binding it to the <see cref="GamersCommunityDbContext"/> database context and the <see cref="Country"/> entity type.
     /// </para>
     /// <para>
     /// It exposes all generic CRUD operations (List, Get, Update, Delete, etc.) implemented
-    /// in <see cref="GenericTableService{TContext, TEntity}"/>, while associating them with the logical table name <c>"Countries"</c>.
+    /// in <see cref="GenericDataService{TContext, TEntity}"/>, while associating them with the logical table name <c>"Countries"</c>.
     /// </para>
     /// </remarks>
     /// <param name="context">
     /// The database context used to access the <c>Countries</c> table.
     /// Typically injected by dependency injection.
     /// </param>
-    public class CountriesService(GamersCommunityDbContext context) : GenericTableService<GamersCommunityDbContext, Country>(context, "Countries")
+    public class CountriesService(GamersCommunityDbContext context) : GenericDataService<GamersCommunityDbContext, Country>(context, "Countries")
     {
     }
 }
