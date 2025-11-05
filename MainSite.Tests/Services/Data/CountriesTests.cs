@@ -7,7 +7,16 @@ namespace MainSite.Tests.Services.Data
 {
     public class CountriesTests(TestsDataFixture fixture) : GenericDataServiceTests<GamersCommunityDbContext, CountriesService, Country>, IClassFixture<TestsDataFixture>
     {
-        protected override CountriesService CreateService() => fixture.CreateCountriesService();
+        protected override CountriesService CreateService()
+        {
+            var ctx = fixture.CreateContext();
+            ctx.Countries.AddRange(GetFakeData());
+            ctx.SaveChanges();
+
+            fixture.SeedFullDataset(ctx);
+
+            return new CountriesService(ctx);
+        }
 
         protected override List<Country> GetFakeData()
         {
@@ -18,7 +27,9 @@ namespace MainSite.Tests.Services.Data
         {
             return new Country
             {
-                Name = "Country test"
+                Name = "New country",
+                CreationDate = DateTime.Now,
+                ModificationDate = DateTime.Now,
             };
         }
     }

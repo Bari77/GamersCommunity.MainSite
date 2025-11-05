@@ -1,5 +1,4 @@
-﻿using MainSite.Consumer.Services.Data;
-using MainSite.Database.Context;
+﻿using MainSite.Database.Context;
 using MainSite.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,17 +19,6 @@ namespace MainSite.Tests
         }
 
         /// <summary>
-        /// Creates a fully functional <see cref="CountriesService"/> with all required dependencies and seeded data.
-        /// </summary>
-        public CountriesService CreateCountriesService()
-        {
-            var ctx = CreateContext();
-            SeedFullDataset(ctx);
-
-            return new CountriesService(ctx);
-        }
-
-        /// <summary>
         /// Seeds the full test dataset required across all services (relations, dependencies, etc.).
         /// </summary>
         public void SeedFullDataset(GamersCommunityDbContext ctx)
@@ -38,8 +26,18 @@ namespace MainSite.Tests
             if (!ctx.Countries.Any())
             {
                 ctx.Countries.AddRange(
-                    new Country { Id = 1, Name = "Country A", CreationDate = DateTime.Now, ModificationDate = DateTime.Now },
-                    new Country { Id = 2, Name = "Country B", CreationDate = DateTime.Now, ModificationDate = DateTime.Now }
+                    new Country
+                    {
+                        Name = "Country A",
+                        CreationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
+                    },
+                    new Country
+                    {
+                        Name = "Country B",
+                        CreationDate = DateTime.Now,
+                        ModificationDate = DateTime.Now
+                    }
                 );
             }
 
