@@ -3,7 +3,6 @@ using GamersCommunity.Core.Logging;
 using GamersCommunity.Core.Rabbit;
 using GamersCommunity.Core.Services;
 using MainSite.Consumer.Configuration;
-using MainSite.Consumer.Services;
 using MainSite.Database.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,18 +59,13 @@ namespace MainSite.Consumer
 
                         // Register application services
                         services.AddSingleton<Serilog.ILogger>(sp => Log.Logger);
-                        services.AddScoped<ITableService, CitiesService>();
-                        services.AddScoped<ITableService, CountriesService>();
-                        services.AddScoped<ITableService, EventsService>();
-                        services.AddScoped<ITableService, EventsUsersInterestsService>();
-                        services.AddScoped<ITableService, EventsUsersStatusesService>();
-                        services.AddScoped<ITableService, FriendsService>();
-                        services.AddScoped<ITableService, FriendStatusesService>();
-                        services.AddScoped<ITableService, GamesService>();
-                        services.AddScoped<ITableService, GameTypesService>();
-                        services.AddScoped<ITableService, MessagesService>();
-                        services.AddScoped<ITableService, UsersService>();
-                        services.AddScoped<TableRouter>();
+
+                        services.Scan(scan => scan
+                            .FromAssembliesOf(typeof(AppSettings))
+                            .AddClasses(c => c.AssignableTo<IBusService>())
+                            .AsImplementedInterfaces()
+                            .WithScopedLifetime());
+                        services.AddScoped<BusRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
 
                         // Register the background worker that runs the consumer

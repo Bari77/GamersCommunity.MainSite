@@ -41,31 +41,17 @@ namespace MainSite.Consumer.Services
         /// </summary>
         private AppSettings AppSettings = otps.Value;
 
-        /// <summary>
-        /// Handles custom user-related actions that extend the default behavior of <see cref="GenericTableService{TContext, TEntity}"/>.
-        /// This override processes the "Load" action, which is responsible for either logging in
-        /// an existing user or signing up a new one based on their Keycloak identifier.
-        /// </summary>
-        /// <param name="action">The action name to execute. Supports "Load" in this implementation.</param>
-        /// <param name="data">A JSON payload representing a <see cref="LoadRequest"/> object, required for the "Load" action.</param>
-        /// <param name="id">Optional entity ID (not used in this override).</param>
-        /// <param name="ct">A cancellation token to observe while waiting for the task to complete.</param>
-        /// <returns>
-        /// A JSON string representing the user object returned from either <see cref="LoginAsync(User, CancellationToken)"/>
-        /// or <see cref="SignupAsync(User, CancellationToken)"/>.
-        /// </returns>
-        /// <exception cref="BadRequestException">Thrown if the "Load" action is invoked without the required data payload.</exception>
-        public override async Task<string> HandleAsync(string action, string? data = null, int? id = null, CancellationToken ct = default)
+        public override async Task<string> HandleAsync(BusMessage message, CancellationToken ct = default)
         {
-            switch (action)
+            switch (message.Action)
             {
                 case "Load":
-                    if (string.IsNullOrEmpty(data))
+                    if (string.IsNullOrEmpty(message.Data))
                     {
                         throw new BadRequestException("MANDATORY", "Data mandatory");
                     }
 
-                    var info = ConsumerParamParser.ToObject<LoadRequest>(data);
+                    var info = ConsumerParamParser.ToObject<LoadRequest>(message.Data);
                     var user = await Context.Users.FirstOrDefaultAsync(f => f.IdKeycloak == info.IdKeycloak, ct);
 
                     if (user != null)
@@ -93,7 +79,7 @@ namespace MainSite.Consumer.Services
                     return JsonSafe.Serialize(await SignupAsync(user, ct));
             }
 
-            return await base.HandleAsync(action, data, id, ct);
+            return await base.HandleAsync(message, ct);
         }
 
         /// <summary>
