@@ -3,6 +3,7 @@ using GamersCommunity.Core.Logging;
 using GamersCommunity.Core.Rabbit;
 using GamersCommunity.Core.Services;
 using MainSite.Consumer.Configuration;
+using MainSite.Consumer.Services.Infra;
 using MainSite.Database.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,6 +66,7 @@ namespace MainSite.Consumer
                             .AddClasses(c => c.AssignableTo<IBusService>())
                             .AsImplementedInterfaces()
                             .WithScopedLifetime());
+                        services.AddScoped<HealthService>();
                         services.AddScoped<BusRouter>();
                         services.AddScoped<MainSiteServiceConsumer>();
 
