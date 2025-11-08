@@ -10,7 +10,7 @@ public partial class Message : IKeyTable
 
     public DateTime ModificationDate { get; set; }
 
-    public string Message1 { get; set; } = null!;
+    public string Content { get; set; } = null!;
 
     public int IdSender { get; set; }
 

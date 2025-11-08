@@ -5,6 +5,7 @@ using GamersCommunity.Core.Services;
 using LinqToDB;
 using MainSite.Consumer.Configuration;
 using MainSite.Consumer.Models;
+using MainSite.Consumer.Utils;
 using MainSite.Consumer.Validators;
 using MainSite.Database.Context;
 using MainSite.Database.Models;
@@ -96,7 +97,7 @@ namespace MainSite.Consumer.Services.Data
 
             do
             {
-                entity.Discriminator = GetRandomDiscriminator();
+                entity.Discriminator = DiscriminatorHelper.GetRandomDiscriminator();
             }
             while (await Context.Users.AnyAsync(u => u.Nickname == entity.Nickname && u.Discriminator == entity.Discriminator, ct));
 
@@ -134,16 +135,6 @@ namespace MainSite.Consumer.Services.Data
         {
             lock (Random)
                 return AppSettings.AvatarSettings.AvatarBaseUrl + "/" + Random.Next(AppSettings.AvatarSettings.MinRangeAvatarId, AppSettings.AvatarSettings.MaxRangeAvatarId + 1) + ".png";
-        }
-
-        /// <summary>
-        /// Get a random descriminator value
-        /// </summary>
-        /// <returns>Random descriminator value</returns>
-        private string GetRandomDiscriminator()
-        {
-            lock (Random)
-                return Random.Next(1, 10000).ToString("D4");
         }
     }
 }

@@ -170,11 +170,9 @@ public partial class GamersCommunityDbContext : DbContext
         {
             entity.ToTable("Friend");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.IdFriendAsking).ValueGeneratedOnAdd();
             entity.Property(e => e.ModificationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -243,12 +241,10 @@ public partial class GamersCommunityDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Message");
 
+            entity.Property(e => e.Content).HasColumnType("text");
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Message1)
-                .HasColumnType("text")
-                .HasColumnName("Message");
             entity.Property(e => e.ModificationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
