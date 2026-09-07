@@ -49,11 +49,33 @@
             </div>
         </div>
 
-        @if (isOwnProfile()) {
-            <a routerLink="/users/profile" nbButton status="primary" i18n="@@users.profilePublic.editMine">
-                Edit my profile
-            </a>
-        } @else if (usersStore.isLoggedIn()) {
+        @if (wowPlayerPublicId(); as playerPublicId) {
+            @if (wowGameTile(); as tile) {
+                <section class="user-profile__games">
+                    <h2 class="user-profile__games-title" i18n="@@users.profilePublic.games">Games</h2>
+                    <a
+                        class="game-tile"
+                        [routerLink]="['/world-of-warcraft/players', playerPublicId]"
+                        [style.--tile-accent]="'var(--game-accent)'"
+                    >
+                        <img
+                            class="game-tile__art"
+                            [src]="assetsIcon(tile.game.picture)"
+                            [alt]="tile.game.title"
+                            width="96"
+                            height="96"
+                        />
+                        <div class="game-tile__meta">
+                            <span class="game-tile__type">{{ tile.typeLabel }}</span>
+                            <span class="game-tile__title gc-display">{{ tile.game.title }}</span>
+                        </div>
+                        <nb-icon icon="arrow-forward-outline" pack="eva"></nb-icon>
+                    </a>
+                </section>
+            }
+        }
+
+        @if (!isOwnProfile() && usersStore.isLoggedIn()) {
             <div class="user-profile__actions" [nbSpinner]="friendsStore.actionLoading()">
                 @switch (relationKind(user)) {
                     @case ("none") {
@@ -176,7 +198,7 @@
                     Report
                 </button>
             </div>
-        } @else {
+        } @else if (!isOwnProfile()) {
             <a routerLink="/users/login" nbButton status="primary" i18n="@@users.profilePublic.loginToAdd">
                 Log in to add this player
             </a>

@@ -137,7 +137,11 @@ export class UsersStore {
         this.authService
             .authenticate("authentik")
             .pipe(finalize(() => this.$loading.set(false)))
-            .subscribe();
+            .subscribe({
+                error: () => {
+                    this.setSession(null);
+                },
+            });
     }
 
     public signup(): void {

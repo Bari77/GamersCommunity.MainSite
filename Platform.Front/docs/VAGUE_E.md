@@ -86,5 +86,5 @@ Staff checks run in the Consumer (Gateway has no role notion today): Private + `
 
 - Guild / game-wall moderation — Vague C
 - LFG mute enforcement — Vague C (mute row already exists)
-- Legacy `Rank` / `Right` / `RankRight` — unused, ignore
+- Legacy `Rank` / `Right` / `RankRight` — dropped (migration `DropLegacyRankRight`)
 - Authentik roles as authorization source — no

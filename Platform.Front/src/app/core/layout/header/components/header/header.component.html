@@ -91,6 +91,7 @@
             ></app-avatar>
         } @else {
             <button
+                type="button"
                 [nbSpinner]="usersStore.redirectLoading() || usersStore.loading()"
                 (click)="redirect('/users/login')"
                 nbButton

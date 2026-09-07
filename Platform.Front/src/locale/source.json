@@ -137,6 +137,7 @@
     "users.profilePublic.relation.none": "Not in your friends list",
     "users.profilePublic.action.add": "Add friend",
     "users.profilePublic.action.waiting": "Request pending",
-    "users.profilePublic.loginToAdd": "Log in to add this player"
+    "users.profilePublic.loginToAdd": "Log in to add this player",
+    "users.profilePublic.games": "Games"
   }
 }

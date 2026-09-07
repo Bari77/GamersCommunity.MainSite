@@ -1,25 +1,28 @@
 import { DatePipe } from "@angular/common";
-import { Component, effect, inject, input } from "@angular/core";
+import { Component, computed, effect, inject, input, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
     ReportDialogComponent,
     ReportDialogResult,
 } from "@features/moderation/components/report-dialog/report-dialog.component";
 import { ReportsService } from "@features/moderation/services/reports.service";
+import { GamesStore } from "@features/games/stores/games.store";
+import { WowPlayersService } from "@features/games/services/wow-players.service";
 import { FriendRelationKind, FriendsStore } from "@features/social/stores/friends.store";
 import { MessengerStore } from "@features/social/stores/messenger.store";
 import { UsersStore } from "@features/users/stores/users.store";
 import { isUserOnline } from "@features/users/utils/presence.util";
-import { NbButtonModule, NbDialogService, NbSpinnerModule, NbToastrService } from "@nebular/theme";
+import { NbButtonModule, NbDialogService, NbIconModule, NbSpinnerModule, NbToastrService } from "@nebular/theme";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { firstValueFrom } from "rxjs";
+import { environment } from "environments/environment";
 import { PublicUser } from "../../models/public-user.model";
 import { UserDirectoryStore } from "../../stores/user-directory.store";
 
 @Component({
     standalone: true,
     selector: "app-user-profile",
-    imports: [NbButtonModule, NbSpinnerModule, DatePipe, RouterLink, UserHandleComponent],
+    imports: [NbButtonModule, NbIconModule, NbSpinnerModule, DatePipe, RouterLink, UserHandleComponent],
     templateUrl: "./user-profile.component.html",
     styleUrl: "./user-profile.component.scss",
 })
@@ -29,8 +32,21 @@ export class UserProfileComponent {
     public readonly usersStore = inject(UsersStore);
     public readonly friendsStore = inject(FriendsStore);
     public readonly messengerStore = inject(MessengerStore);
+    public readonly wowPlayerPublicId = signal<string | null>(null);
+    public readonly gamesStore = inject(GamesStore);
+    public readonly wowGameTile = computed(() => {
+        for (const type of this.gamesStore.gameTypes.value()) {
+            for (const game of type.games) {
+                if (game.urlValue.includes("world-of-warcraft")) {
+                    return { game, typeLabel: type.entitled };
+                }
+            }
+        }
+        return null;
+    });
     private readonly dialogs = inject(NbDialogService);
     private readonly reports = inject(ReportsService);
+    private readonly wowPlayers = inject(WowPlayersService);
     private readonly toastr = inject(NbToastrService);
 
     public constructor() {
@@ -43,6 +59,11 @@ export class UserProfileComponent {
                 this.friendsStore.reload();
             }
         });
+
+        effect(() => {
+            const id = this.publicId();
+            void this.loadWowSheet(id);
+        });
     }
 
     public isOwnProfile(): boolean {
@@ -51,6 +72,10 @@ export class UserProfileComponent {
 
     public isOnline(lastConnection: Date | null): boolean {
         return isUserOnline(lastConnection);
+    }
+
+    public assetsIcon(picture: string): string {
+        return `${environment.assetsBaseUrl}/Icons/Games/${picture}.png`;
     }
 
     public relationKind(user: PublicUser): FriendRelationKind {
@@ -116,5 +141,15 @@ export class UserProfileComponent {
             $localize`:@@moderation.report.sent:Thanks, the staff will review it.`,
             $localize`:@@moderation.report.sentTitle:Report sent`,
         );
+    }
+
+    private async loadWowSheet(platformUserPublicId: string): Promise<void> {
+        this.wowPlayerPublicId.set(null);
+        try {
+            const result = await firstValueFrom(this.wowPlayers.resolve(platformUserPublicId));
+            this.wowPlayerPublicId.set(result.hasSheet ? result.playerPublicId : null);
+        } catch {
+            this.wowPlayerPublicId.set(null);
+        }
     }
 }

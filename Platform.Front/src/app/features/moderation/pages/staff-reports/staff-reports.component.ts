@@ -1,6 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, effect, inject } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { PermissionsService } from "@core/services/permissions.service";
 import { NbButtonModule, NbDialogService, NbSelectModule, NbSpinnerModule } from "@nebular/theme";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
@@ -18,7 +18,7 @@ import { ModerationReportsBadgeStore } from "../../stores/moderation-reports-bad
 @Component({
     standalone: true,
     selector: "app-staff-reports",
-    imports: [DatePipe, RouterLink, NbButtonModule, NbSelectModule, NbSpinnerModule, UserHandleComponent, ModerationNavComponent],
+    imports: [DatePipe, NbButtonModule, NbSelectModule, NbSpinnerModule, UserHandleComponent, ModerationNavComponent],
     templateUrl: "./staff-reports.component.html",
     styleUrl: "./staff-reports.component.scss",
 })

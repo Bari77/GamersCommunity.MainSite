@@ -3,6 +3,7 @@ using GamersCommunity.Core.Rabbit;
 using GamersCommunity.Core.Serialization;
 using GamersCommunity.Core.Services;
 using Platform.Consumer.Configuration;
+using Platform.Consumer.Integration;
 using Platform.Consumer.Models;
 using Platform.Consumer.Security;
 using Platform.Consumer.Utils;
@@ -34,7 +35,8 @@ namespace Platform.Consumer.Services.Data
     public class UsersService(
         GamersCommunityDbContext context,
         IOptions<AppSettings> otps,
-        IOptions<AuthZSettings> authZOptions) : GenericDataService<GamersCommunityDbContext, User>(context, "Users")
+        IOptions<AuthZSettings> authZOptions,
+        IUserIdentityPublisher identityPublisher) : GenericDataService<GamersCommunityDbContext, User>(context, "Users")
     {
         /// <summary>
         /// Random number generator
@@ -379,6 +381,7 @@ namespace Platform.Consumer.Services.Data
 
             user.ModificationDate = DateTime.UtcNow;
             await Context.SaveChangesAsync(ct);
+            await identityPublisher.PublishAsync(user, ct);
             return user;
         }
 
@@ -424,7 +427,13 @@ namespace Platform.Consumer.Services.Data
             await UpdateAsync(entity.Id, entity, ct);
             await EnsureSiteRoleAsync(entity, ct);
 
-            return await GetAsync(entity.Id, ct);
+            var user = await GetAsync(entity.Id, ct);
+
+            // Covers Load, Touch and Signup: every session start refreshes the identity held by
+            // the game microservices, which is what backfills a subscriber joining late.
+            await identityPublisher.PublishAsync(user, ct);
+
+            return user;
         }
 
         private async Task AssignSignupRoleAsync(User entity, CancellationToken ct)

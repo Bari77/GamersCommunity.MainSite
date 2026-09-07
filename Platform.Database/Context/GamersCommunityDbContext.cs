@@ -50,12 +50,6 @@ public partial class GamersCommunityDbContext : DbContext
 
     public virtual DbSet<Report> Reports { get; set; }
 
-    public virtual DbSet<Rank> Ranks { get; set; }
-
-    public virtual DbSet<RankRight> RankRights { get; set; }
-
-    public virtual DbSet<Right> Rights { get; set; }
-
     public virtual DbSet<SiteRole> SiteRoles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -436,55 +430,6 @@ public partial class GamersCommunityDbContext : DbContext
                 .HasForeignKey(d => d.IdTarget)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reports_Target");
-        });
-
-        modelBuilder.Entity<Rank>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Rank");
-
-            entity.Property(e => e.Color)
-                .HasMaxLength(6)
-                .IsUnicode(false);
-            entity.Property(e => e.CreationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Entitled).HasMaxLength(150);
-            entity.Property(e => e.ModificationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<RankRight>(entity =>
-        {
-            entity.Property(e => e.CreationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.ModificationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-
-            entity.HasOne(d => d.IdRankNavigation).WithMany(p => p.RankRights)
-                .HasForeignKey(d => d.IdRank)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RankRights_Ranks");
-
-            entity.HasOne(d => d.IdRightNavigation).WithMany(p => p.RankRights)
-                .HasForeignKey(d => d.IdRight)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RankRights_Rights");
-        });
-
-        modelBuilder.Entity<Right>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Right");
-
-            entity.Property(e => e.CreationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Entitled).HasMaxLength(150);
-            entity.Property(e => e.ModificationDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<User>(entity =>

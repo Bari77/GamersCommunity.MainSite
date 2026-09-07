@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { NbButtonModule, NbInputModule, NbSelectModule, NbSpinnerModule } from "@nebular/theme";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { ModerationNavComponent } from "../../components/moderation-nav/moderation-nav.component";
@@ -12,7 +12,6 @@ import { StaffUsersStore } from "../../stores/staff-users.store";
     selector: "app-staff-users",
     imports: [
         FormsModule,
-        RouterLink,
         DatePipe,
         NbButtonModule,
         NbInputModule,

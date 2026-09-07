@@ -111,7 +111,7 @@ public class SanctionsAndRolesTests : IClassFixture<FakeDataset>
         ctx.UserSiteRoles.Add(new UserSiteRole { IdUser = reporter.Id, IdSiteRole = 2 });
         ctx.SaveChanges();
 
-        var service = new ReportsService(ctx);
+        var service = new ReportsService(ctx, new NoopRealtime());
         var createdJson = await service.HandleAsync(new BusMessage
         {
             Type = BusServiceTypeEnum.DATA,

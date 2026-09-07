@@ -1,7 +1,9 @@
+using GamersCommunity.Core.Events;
 using GamersCommunity.Core.Logging;
 using GamersCommunity.Core.Rabbit;
 using GamersCommunity.Core.Services;
 using Platform.Consumer.Configuration;
+using Platform.Consumer.Integration;
 using Platform.Consumer.Realtime;
 using Platform.Consumer.Security;
 using Platform.Consumer.Services.Infra;
@@ -83,6 +85,8 @@ namespace Platform.Consumer
 
                         services.AddSingleton<Serilog.ILogger>(sp => Log.Logger);
                         services.AddSingleton<IRealtimeEventPublisher, RealtimeEventPublisher>();
+                        services.AddSingleton<IIntegrationEventPublisher, RabbitIntegrationEventPublisher>();
+                        services.AddSingleton<IUserIdentityPublisher, UserIdentityPublisher>();
                         services.AddScoped<Platform.Consumer.Notifications.INotificationWriter, Platform.Consumer.Notifications.NotificationWriter>();
 
                         services.Scan(scan => scan

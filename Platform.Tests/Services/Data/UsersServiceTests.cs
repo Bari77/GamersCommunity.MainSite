@@ -1,5 +1,6 @@
 using GamersCommunity.Core.Tests;
 using Platform.Consumer.Configuration;
+using Platform.Consumer.Integration;
 using Platform.Consumer.Services.Data;
 using Platform.Consumer.Utils;
 using Platform.Database.Context;
@@ -35,6 +36,12 @@ namespace Platform.Tests.Services.Data
                     MaxRangeAvatarId = 10,
                 }
             }),
-            Options.Create(new AuthZSettings()));
+            Options.Create(new AuthZSettings()),
+            new NoopUserIdentityPublisher());
     }
+}
+
+file sealed class NoopUserIdentityPublisher : IUserIdentityPublisher
+{
+    public Task PublishAsync(User user, CancellationToken ct = default) => Task.CompletedTask;
 }

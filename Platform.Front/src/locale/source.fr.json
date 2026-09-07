@@ -148,6 +148,7 @@
         "users.profilePublic.action.add": "Ajouter en ami",
         "users.profilePublic.action.waiting": "Demande en attente",
         "users.profilePublic.loginToAdd": "Connectez-vous pour ajouter ce joueur",
+        "users.profilePublic.games": "Jeux",
         "core.copyright": "© {$INTERPOLATION}",
         "core.title": "Gamers Community",
         "error.httpCode.internalErrorMsg": "Une erreur s'est produite. Veuillez réessayer ou contacter un administrateur.",
