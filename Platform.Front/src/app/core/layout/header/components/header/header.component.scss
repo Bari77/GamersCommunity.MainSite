@@ -64,8 +64,10 @@
 }
 
 .menu-group-title {
+    font-family: var(--gc-font-display);
     font-weight: 600;
     font-size: 0.8rem;
+    letter-spacing: 0.06em;
     color: var(--text-hint-color);
     padding: 0.25rem 1rem;
     text-transform: uppercase;
@@ -80,7 +82,9 @@
     border-radius: var(--border-radius);
     background: transparent;
     color: inherit;
-    font: inherit;
+    font-family: var(--gc-font-display);
+    font-size: inherit;
+    letter-spacing: 0.04em;
     text-align: left;
     cursor: pointer;
     transition: background 0.15s ease;
