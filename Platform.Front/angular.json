@@ -59,7 +59,11 @@
                                 "input": "public"
                             }
                         ],
-                        "styles": ["src/styles.scss"]
+                        "styles": [
+                            "node_modules/@nebular/theme/styles/prebuilt/cosmic.css",
+                            "node_modules/@bari77/gc-theme/src/global.scss",
+                            "src/styles.scss"
+                        ]
                     }
                 },
                 "esbuild": {
@@ -78,7 +82,11 @@
                                 "input": "public"
                             }
                         ],
-                        "styles": ["node_modules/@nebular/theme/styles/prebuilt/cosmic.css", "src/styles.scss"]
+                        "styles": [
+                            "node_modules/@nebular/theme/styles/prebuilt/cosmic.css",
+                            "node_modules/@bari77/gc-theme/src/global.scss",
+                            "src/styles.scss"
+                        ]
                     },
                     "configurations": {
                         "production": {

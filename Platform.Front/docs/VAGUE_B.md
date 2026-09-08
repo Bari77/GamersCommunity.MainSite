@@ -8,7 +8,9 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 - **Lien depuis le profil Platform** : `/users/:platformPublicId` → résolution WoW → `/world-of-warcraft/players/:playerPublicId`.
 - **Identité WoW** : `Player.IdKeycloak` + `Player.PlatformUserPublicId` (index uniques), `IdUser` = `Platform.User.Id` renseigné au `Load`.
 - **Mute LFG** : bannière + masquage UI côté shell (session Platform) en B ; enforcement Consumer WoW ↔ Platform en C.
-- **Widgets** : package DevKit `@bari77/gc-widgets` (grille + hosts) partagé shell / remotes — spike après B1.
+- **Widgets** : package DevKit `@bari77/gc-widgets` (grille + hosts) partagé shell / remotes, basé sur `angular-gridster2` v21.
+- **Layout widgets** : stocké en JSON opaque dans `Player.LayoutJson`, catalogue des widgets côté front ; visible par tous, éditable par le seul propriétaire.
+- **Fédération** : `@bari77/gc-widgets` livre du `.ts` brut, il doit rester dans `skip` de `federation.config.mjs` pour passer par le compilateur Angular.
 
 ## B1 — Identité & fiche joueur WoW
 
@@ -22,16 +24,21 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 
 ## B2 — Personnages (CRUD minimal)
 
-- [ ] `Characters` : Create / Get / List (par joueur) / Update / Delete
-- [ ] UI fiche : liste persos, formulaire création / édition
-- [ ] Personnage principal (`Main`) — un seul par joueur
+- [x] Seeds `Specialization` (35), `SpecializationClass` (39), `RaceClass` (124) — `Order = 1` sur les jonctions
+- [x] `Characters` : Create / Get / List (par joueur) / Update / Delete
+- [x] `Characters.Options` (public) : races, serveurs, rôles, factions, classes, specs, matrice race/classe
+- [x] Validations : nom unique par serveur, spec cohérente avec la classe, classe autorisée pour la race
+- [x] UI fiche : cartes personnages aux couleurs de classe, formulaire création / édition, suppression confirmée
+- [x] Personnage principal (`Main`) — un seul par joueur, promotion auto du suivant à la suppression
 
 ## B3 — Médias profil & layout widgets
 
 - [ ] `PlayerPicture`, `PlayerVideo`, `PlayerStream` — list + upload metadata
-- [ ] Colonne `LayoutJson` sur `Player` (grille widgets)
-- [ ] Spike `@bari77/gc-widgets` : `WidgetGridHost`, `WidgetColumnSpan`, éditeur propriétaire
-- [ ] Widgets initiaux : bio, persos, médias, stats
+- [x] Colonne `LayoutJson` sur `Player` (grille widgets) — écrite via `Players.Update`, lue par tous
+- [x] `@bari77/gc-widgets` : `WidgetGridComponent`, `WidgetDefDirective`, `WidgetEditBarComponent` (gridster2 v21)
+- [x] Widgets initiaux : identité, bio, stats, persos (médias en attente des tables)
+- [ ] Publier DevKit 0.4.0 et remplacer la référence `file:.tmp-packs/...` par la version registry
+- [ ] Reporter le package widgets dans `GamersCommunity.Games.Template`
 
 ## B4 — Home WoW (rails)
 
@@ -47,7 +54,7 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 | Players | Get, Resolve | Load, Update |
 | HomeFeed | Get | — |
 | LfgAds | ListRecent | Create |
-| Characters | Get | Create, Update, Delete, List |
+| Characters | Get, List, Options | Create, Update, Delete |
 
 ## Hors scope B
 
