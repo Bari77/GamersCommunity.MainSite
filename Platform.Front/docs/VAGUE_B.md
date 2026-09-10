@@ -10,6 +10,8 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 - **Mute LFG** : bannière + masquage UI côté shell (session Platform) en B ; enforcement Consumer WoW ↔ Platform en C.
 - **Widgets** : package DevKit `@bari77/gc-widgets` (grille + hosts) partagé shell / remotes, basé sur `angular-gridster2` v21.
 - **Layout widgets** : stocké en JSON opaque dans `Player.LayoutJson`, catalogue des widgets côté front ; visible par tous, éditable par le seul propriétaire.
+- **Workspace multi-pages** (`gc-widgets` 0.5.0) : `LayoutJson` porte `{ version: 2, pages: [...] }` — chaque page a son titre et ses instances de widgets (`type` + `settings`). Les tableaux plats de la v1 sont migrés à la lecture vers la première page. Le consumer accepte donc objet **ou** tableau.
+- **Médias profil** : `PlayerPicture` / `PlayerVideo` / `PlayerStream` stockent des URL (pas d'upload de fichier) ; `Share` décide de la visibilité publique, le propriétaire voit tout.
 - **Fédération** : `@bari77/gc-widgets` livre du `.ts` brut, il doit rester dans `skip` de `federation.config.mjs` pour passer par le compilateur Angular.
 
 ## B1 — Identité & fiche joueur WoW
@@ -33,11 +35,12 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 
 ## B3 — Médias profil & layout widgets
 
-- [ ] `PlayerPicture`, `PlayerVideo`, `PlayerStream` — list + upload metadata
+- [x] `PlayerPicture`, `PlayerVideo`, `PlayerStream` — List (public, filtré sur `Share`) / Create / Update / Delete (propriétaire)
 - [x] Colonne `LayoutJson` sur `Player` (grille widgets) — écrite via `Players.Update`, lue par tous
-- [x] `@bari77/gc-widgets` : `WidgetGridComponent`, `WidgetDefDirective`, `WidgetEditBarComponent` (gridster2 v21)
-- [x] Widgets initiaux : identité, bio, stats, persos (médias en attente des tables)
-- [ ] Publier DevKit 0.4.0 et remplacer la référence `file:.tmp-packs/...` par la version registry
+- [x] `@bari77/gc-widgets` : `WidgetWorkspaceComponent` (rail de pages + grille + catalogue + réglages), `WidgetGridComponent`, `WidgetDefDirective`, `WidgetEditBarComponent` (gridster2 v21)
+- [x] Widgets : identité, présentation IRL, présentation IG, stats, persos, galerie photo, galerie vidéo, streams, lecteur Twitch, liens
+- [x] Pages par défaut : accueil (verrouillée), personnages, vidéos, photos, liens — le propriétaire crée / renomme / réordonne / supprime les siennes
+- [x] Publier DevKit 0.4.0 et remplacer la référence `file:.tmp-packs/...` par la version registry
 - [ ] Reporter le package widgets dans `GamersCommunity.Games.Template`
 
 ## B4 — Home WoW (rails)
@@ -55,6 +58,9 @@ Pont identité Platform ↔ microservice jeu, fiche joueur WoW publique, rails s
 | HomeFeed | Get | — |
 | LfgAds | ListRecent | Create |
 | Characters | Get, List, Options | Create, Update, Delete |
+| PlayerPictures | List | Create, Update, Delete |
+| PlayerVideos | List | Create, Update, Delete |
+| PlayerStreams | List | Create, Update, Delete |
 
 ## Hors scope B
 

@@ -47,13 +47,4 @@ export class StaffUsersStore {
             this.$loading.set(false);
         }
     }
-
-    public async loaded(): Promise<void> {
-        if (this.$loading()) {
-            const start = Date.now();
-            while (this.$loading() && Date.now() - start < 15_000) {
-                await new Promise((resolve) => setTimeout(resolve, 40));
-            }
-        }
-    }
 }

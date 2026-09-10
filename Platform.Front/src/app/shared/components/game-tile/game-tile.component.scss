@@ -1,0 +1,65 @@
+:host {
+    display: block;
+}
+
+.game-tile {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 0.85rem;
+    background:
+        linear-gradient(145deg, rgb(22 32 51 / 95%), rgb(14 21 36 / 95%)),
+        radial-gradient(circle at 0 0, color-mix(in srgb, var(--game-accent) 18%, transparent), transparent 55%);
+    color: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-0.2rem) scale(1.01);
+        border-color: color-mix(in srgb, var(--game-accent) 55%, transparent);
+        box-shadow: 0 0.75rem 1.75rem rgb(0 0 0 / 35%);
+    }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+
+        .game-tile__meta {
+            gap: 0.45rem;
+        }
+    }
+
+    &__art {
+        width: 3.5rem;
+        height: 3.5rem;
+        object-fit: contain;
+        border-radius: 0.5rem;
+    }
+
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        min-width: 0;
+    }
+
+    &__type {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: rgb(170 185 220 / 70%);
+    }
+
+    &__title {
+        font-size: 1.05rem;
+    }
+}

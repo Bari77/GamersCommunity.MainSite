@@ -10,6 +10,8 @@
         "core.header.menu.profile": "Profil",
         "core.header.menu.logout": "Déconnexion",
         "users.profile.title": "Profil",
+        "users.profile.gamesSection": "Mes fiches de jeu",
+        "users.profile.gamesEmpty": "Vous n'avez pas encore de fiche de jeu. Ouvrez un jeu pour en créer une.",
         "users.profile.avatarSection": "Choisissez votre avatar",
         "users.profile.saveAvatar": "Enregistrer l'avatar",
         "users.profile.loading": "Chargement du profil…",

@@ -26,7 +26,6 @@
         }
     }
 
-    &__loading,
     &__empty {
         min-height: 4rem;
         color: rgb(160 170 200 / 70%);
@@ -57,6 +56,11 @@
         &:hover {
             background: rgb(255 255 255 / 6%);
         }
+    }
+
+    &__row--skeleton {
+        cursor: default;
+        pointer-events: none;
     }
 
     &__avatar {

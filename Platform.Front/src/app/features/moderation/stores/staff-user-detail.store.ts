@@ -28,13 +28,6 @@ export class StaffUserDetailStore {
         }
     }
 
-    public async loaded(): Promise<void> {
-        const start = Date.now();
-        while (this.$loading() && Date.now() - start < 15_000) {
-            await new Promise((resolve) => setTimeout(resolve, 40));
-        }
-    }
-
     public async mute(reason: string, endDate: Date): Promise<void> {
         await this.createSanction("mute", reason, endDate);
     }

@@ -15,6 +15,7 @@ import { UsersService } from "../users.service";
 export class UsersStore {
     public readonly redirectLoading = computed(() => this.$redirectLoading());
     public readonly loading = computed(() => this.$loading());
+    public readonly sessionResolved = computed(() => this.$sessionResolved());
     public readonly user = computed(() => this.$user());
     public readonly isLoggedIn = computed(() => !!this.$user());
     public readonly discriminator = computed(() => `#${this.$user()?.discriminator}`);

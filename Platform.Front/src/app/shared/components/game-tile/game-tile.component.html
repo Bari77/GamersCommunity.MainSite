@@ -1,0 +1,27 @@
+@if (skeleton()) {
+    <div class="game-tile game-tile--skeleton" aria-busy="true">
+        <gc-skeleton width="3.5rem" height="3.5rem" radius="0.5rem" />
+        <div class="game-tile__meta">
+            <gc-skeleton width="45%" height="0.7rem" />
+            <gc-skeleton width="75%" height="1.05rem" />
+        </div>
+        <gc-skeleton width="1.5rem" height="1.5rem" shape="circle" />
+    </div>
+} @else if (link(); as target) {
+    <a class="game-tile" [routerLink]="target">
+        <ng-container [ngTemplateOutlet]="content" />
+    </a>
+} @else {
+    <button type="button" class="game-tile" (click)="activated.emit()">
+        <ng-container [ngTemplateOutlet]="content" />
+    </button>
+}
+
+<ng-template #content>
+    <img class="game-tile__art" [src]="iconUrl()" [alt]="title()" width="96" height="96" />
+    <div class="game-tile__meta">
+        <span class="game-tile__type">{{ typeLabel() }}</span>
+        <span class="game-tile__title gc-display">{{ title() }}</span>
+    </div>
+    <nb-icon icon="arrow-forward-outline" pack="eva"></nb-icon>
+</ng-template>

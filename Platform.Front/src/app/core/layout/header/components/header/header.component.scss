@@ -47,6 +47,11 @@
     app-user-handle {
         font-size: 1.15rem;
     }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+    }
 }
 
 .custom-menu {
@@ -92,6 +97,11 @@
 
 .menu-item:hover {
     background-color: var(--menu-item-hover-background-color);
+}
+
+.menu-item--skeleton {
+    cursor: default;
+    pointer-events: none;
 }
 
 .menu-icon {

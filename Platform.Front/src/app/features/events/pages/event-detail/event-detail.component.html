@@ -2,7 +2,27 @@
     <a routerLink="/events" nbButton ghost status="control" i18n="@@events.detail.back">Back to events</a>
 
     @if (eventsStore.detailLoading()) {
-        <div class="event-detail__loading" [nbSpinner]="true" nbSpinnerStatus="primary" nbSpinnerSize="large"></div>
+        <div class="event-detail__skeleton" aria-busy="true">
+            <gc-skeleton class="event-detail__cover" width="100%" height="18rem" radius="0.85rem" />
+            <gc-skeleton width="55%" height="2.2rem" radius="0.4rem" />
+            <gc-skeleton width="35%" height="1.05rem" />
+            <div class="event-detail__desc-lines">
+                @for (line of descriptionPlaceholders; track line) {
+                    <gc-skeleton [width]="$last ? '48%' : '100%'" height="0.95rem" />
+                }
+            </div>
+
+            @if (usersStore.isLoggedIn()) {
+                <div class="event-detail__rsvp">
+                    <p class="event-detail__rsvp-label" i18n="@@events.detail.rsvpLabel">Your RSVP</p>
+                    <div class="event-detail__rsvp-actions">
+                        @for (action of rsvpPlaceholders; track action) {
+                            <gc-skeleton width="6rem" height="2rem" radius="0.25rem" />
+                        }
+                    </div>
+                </div>
+            }
+        </div>
     } @else if (eventsStore.selectedEvent.value(); as item) {
         @if (item.image) {
             <img class="event-detail__cover" [src]="item.image" [alt]="item.title" />
@@ -23,41 +43,49 @@
         <div class="event-detail__rsvp" [nbSpinner]="interestsStore.saving()">
             @if (usersStore.isLoggedIn()) {
                 <p class="event-detail__rsvp-label" i18n="@@events.detail.rsvpLabel">Your RSVP</p>
-                <div class="event-detail__rsvp-actions">
-                    <button
-                        type="button"
-                        nbButton
-                        size="small"
-                        [status]="currentStatus(item.id) === EventRsvpStatusId.Interested ? 'info' : 'basic'"
-                        [outline]="currentStatus(item.id) !== EventRsvpStatusId.Interested"
-                        (click)="rsvp(item.id, EventRsvpStatusId.Interested)"
-                        i18n="@@events.detail.rsvp.interested"
-                    >
-                        Interested
-                    </button>
-                    <button
-                        type="button"
-                        nbButton
-                        size="small"
-                        [status]="currentStatus(item.id) === EventRsvpStatusId.Going ? 'success' : 'basic'"
-                        [outline]="currentStatus(item.id) !== EventRsvpStatusId.Going"
-                        (click)="rsvp(item.id, EventRsvpStatusId.Going)"
-                        i18n="@@events.detail.rsvp.going"
-                    >
-                        Going
-                    </button>
-                    <button
-                        type="button"
-                        nbButton
-                        size="small"
-                        [status]="currentStatus(item.id) === EventRsvpStatusId.Declined ? 'danger' : 'basic'"
-                        [outline]="currentStatus(item.id) !== EventRsvpStatusId.Declined"
-                        (click)="rsvp(item.id, EventRsvpStatusId.Declined)"
-                        i18n="@@events.detail.rsvp.declined"
-                    >
-                        Declined
-                    </button>
-                </div>
+                @if (interestsStore.loading()) {
+                    <div class="event-detail__rsvp-actions" aria-busy="true">
+                        @for (action of rsvpPlaceholders; track action) {
+                            <gc-skeleton width="6rem" height="2rem" radius="0.25rem" />
+                        }
+                    </div>
+                } @else {
+                    <div class="event-detail__rsvp-actions">
+                        <button
+                            type="button"
+                            nbButton
+                            size="small"
+                            [status]="currentStatus(item.id) === EventRsvpStatusId.Interested ? 'info' : 'basic'"
+                            [outline]="currentStatus(item.id) !== EventRsvpStatusId.Interested"
+                            (click)="rsvp(item.id, EventRsvpStatusId.Interested)"
+                            i18n="@@events.detail.rsvp.interested"
+                        >
+                            Interested
+                        </button>
+                        <button
+                            type="button"
+                            nbButton
+                            size="small"
+                            [status]="currentStatus(item.id) === EventRsvpStatusId.Going ? 'success' : 'basic'"
+                            [outline]="currentStatus(item.id) !== EventRsvpStatusId.Going"
+                            (click)="rsvp(item.id, EventRsvpStatusId.Going)"
+                            i18n="@@events.detail.rsvp.going"
+                        >
+                            Going
+                        </button>
+                        <button
+                            type="button"
+                            nbButton
+                            size="small"
+                            [status]="currentStatus(item.id) === EventRsvpStatusId.Declined ? 'danger' : 'basic'"
+                            [outline]="currentStatus(item.id) !== EventRsvpStatusId.Declined"
+                            (click)="rsvp(item.id, EventRsvpStatusId.Declined)"
+                            i18n="@@events.detail.rsvp.declined"
+                        >
+                            Declined
+                        </button>
+                    </div>
+                }
             } @else {
                 <p class="event-detail__hint" i18n="@@events.detail.rsvpLogin">Log in to RSVP to this event.</p>
             }

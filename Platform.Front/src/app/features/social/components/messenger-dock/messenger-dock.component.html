@@ -112,11 +112,7 @@
                 }
 
                 @if (messengerStore.selectedConversationPublicId()) {
-                    <div
-                        class="messenger-dock__thread"
-                        [class.has-reply]="replyingTo() !== null"
-                        [nbSpinner]="messengerStore.messagesLoading()"
-                    >
+                    <div class="messenger-dock__thread" [class.has-reply]="replyingTo() !== null">
                         @if (messengerStore.threadBlockState() === 'blockedByMe') {
                             <div class="messenger-dock__block-banner" role="status">
                                 <p i18n="@@social.messenger.blockedByMe">
@@ -147,7 +143,19 @@
                             </p>
                         }
 
-                        <div #whisperScroll class="messenger-dock__messages">
+                        <div #whisperScroll class="messenger-dock__messages" [attr.aria-busy]="messengerStore.messagesLoading()">
+                            @if (messengerStore.messagesLoading()) {
+                                @for (item of bubblePlaceholders; track item) {
+                                    <article class="messenger-dock__bubble messenger-dock__bubble--skeleton" [class.is-mine]="item % 2 === 1">
+                                        <gc-skeleton width="1.7rem" height="1.7rem" shape="circle" />
+                                        <div class="messenger-dock__bubble-body">
+                                            <gc-skeleton width="4rem" height="0.72rem" />
+                                            <gc-skeleton width="9.5rem" height="0.88rem" />
+                                            <gc-skeleton width="3rem" height="0.68rem" />
+                                        </div>
+                                    </article>
+                                }
+                            }
                             @if (messengerStore.threadMessages().length === 0 && !messengerStore.messagesLoading()) {
                                 <p class="messenger-dock__empty">{{ messengerStore.placeholderText() }}</p>
                             }
@@ -267,9 +275,23 @@
                     <div class="messenger-dock__body" [nbSpinner]="messengerStore.actionLoading()">
                         @if (messengerStore.tab() === 'chats') {
                             @if (messengerStore.messagesLoading()) {
-                                <div class="messenger-dock__hint" [nbSpinner]="true" i18n="@@social.messages.loading">
-                                    Loading whispers…
-                                </div>
+                                <ul class="messenger-dock__list" aria-busy="true">
+                                    @for (item of conversationPlaceholders; track item) {
+                                        <li>
+                                            <div class="messenger-dock__row messenger-dock__row--skeleton">
+                                                <gc-skeleton width="2.4rem" height="2.4rem" shape="circle" />
+                                                <span class="messenger-dock__row-text">
+                                                    <gc-skeleton width="7rem" height="0.92rem" />
+                                                    <gc-skeleton width="10rem" height="0.8rem" />
+                                                </span>
+                                                <span class="messenger-dock__row-meta">
+                                                    <gc-skeleton width="2.75rem" height="0.72rem" />
+                                                    <gc-skeleton width="1.15rem" height="1.15rem" shape="circle" />
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
                             } @else if (messengerStore.conversations().length === 0) {
                                 <div class="messenger-dock__hint" i18n="@@social.messages.emptyList">No whispers yet.</div>
                             } @else {
@@ -316,7 +338,24 @@
                             }
                         } @else {
                             @if (messengerStore.friendsLoading()) {
-                                <div class="messenger-dock__hint" [nbSpinner]="true" i18n="@@social.friends.loading">Loading friends…</div>
+                                <ul class="messenger-dock__list" aria-busy="true">
+                                    @for (item of contactPlaceholders; track item) {
+                                        <li class="messenger-dock__contact messenger-dock__contact--skeleton">
+                                            <div class="messenger-dock__row messenger-dock__row--static">
+                                                <gc-skeleton width="2.4rem" height="2.4rem" shape="circle" />
+                                                <span class="messenger-dock__row-text">
+                                                    <gc-skeleton width="8rem" height="0.92rem" />
+                                                    <gc-skeleton width="5rem" height="0.8rem" />
+                                                </span>
+                                            </div>
+                                            <div class="messenger-dock__contact-actions">
+                                                <gc-skeleton width="4rem" height="1.5rem" radius="0.25rem" />
+                                                <gc-skeleton width="4rem" height="1.5rem" radius="0.25rem" />
+                                                <gc-skeleton width="3.5rem" height="1.5rem" radius="0.25rem" />
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
                             } @else if (messengerStore.managedContacts().length === 0) {
                                 <div class="messenger-dock__hint" i18n="@@social.messenger.contactsEmpty">
                                     No friends or requests yet.

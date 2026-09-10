@@ -46,7 +46,17 @@
             </header>
 
             @if (notificationsStore.loading() && notificationsStore.items().length === 0) {
-                <p class="notification-bell__empty" i18n="@@notifications.empty">No notifications yet.</p>
+                <ul class="notification-bell__list" aria-busy="true">
+                    @for (item of itemPlaceholders; track item) {
+                        <li>
+                            <div class="notification-bell__item notification-bell__item--skeleton">
+                                <gc-skeleton width="55%" height="1.1rem" />
+                                <gc-skeleton width="85%" height="1.1rem" />
+                                <gc-skeleton width="3.5rem" height="0.9rem" />
+                            </div>
+                        </li>
+                    }
+                </ul>
             } @else if (notificationsStore.items().length === 0) {
                 <p class="notification-bell__empty" i18n="@@notifications.empty">No notifications yet.</p>
             } @else {

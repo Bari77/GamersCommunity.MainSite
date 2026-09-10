@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, resource, signal } from "@angular/core";
 import { UsersStore } from "@features/users/stores/users.store";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { FriendStatusId, FriendStatusIdValue } from "../models/friend-status";
 import { Friend } from "../models/friend.model";
@@ -28,7 +29,7 @@ export class FriendsStore {
         defaultValue: [] as Friend[],
     });
 
-    public readonly loading = computed(() => this.friends.isLoading());
+    public readonly loading = computed(() => ResourceUtils.isPending(this.friends));
     public readonly actionLoading = computed(() => this.$actionLoading());
     public readonly isEmpty = computed(() => this.friends.value().length === 0);
 

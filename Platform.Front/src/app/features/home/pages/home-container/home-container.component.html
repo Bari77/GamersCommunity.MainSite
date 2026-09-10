@@ -44,33 +44,21 @@
     </header>
 
     @if (gamesStore.loading()) {
-        <div class="home-games">
-            <app-skeleton width="100%" height="12rem" radius="0.75rem" />
-            <app-skeleton width="100%" height="12rem" radius="0.75rem" />
+        <div class="home-games" aria-busy="true">
+            @for (placeholder of tilePlaceholders; track placeholder) {
+                <app-game-tile [skeleton]="true" />
+            }
         </div>
     } @else {
         <div class="home-games">
             @for (type of gamesStore.gameTypes.value(); track type.id) {
                 @for (game of type.games; track game.id) {
-                    <button
-                        type="button"
-                        class="game-tile"
-                        (click)="go(game.urlValue)"
-                        [style.--tile-accent]="'var(--game-accent)'"
-                    >
-                        <img
-                            class="game-tile__art"
-                            [src]="assetsIcon(game.picture)"
-                            [alt]="game.title"
-                            width="96"
-                            height="96"
-                        />
-                        <div class="game-tile__meta">
-                            <span class="game-tile__type">{{ type.entitled }}</span>
-                            <span class="game-tile__title gc-display">{{ game.title }}</span>
-                        </div>
-                        <nb-icon icon="arrow-forward-outline" pack="eva"></nb-icon>
-                    </button>
+                    <app-game-tile
+                        [title]="game.title"
+                        [typeLabel]="type.entitled"
+                        [iconUrl]="assetsIcon(game.picture)"
+                        (activated)="go(game.urlValue)"
+                    />
                 }
             }
         </div>

@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, resource } from "@angular/core";
 import { Game } from "@features/games/models/game.model";
 import { NbMenuItem } from "@nebular/theme";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { environment } from "environments/environment";
 import { firstValueFrom, map, zip } from "rxjs";
 import { GameType } from "../models/gameType.model";
@@ -25,7 +26,7 @@ export class GamesStore {
     });
 
     public readonly gameMenu = computed(() => this.buildMenu(this.gameTypes.value() ?? []));
-    public readonly loading = computed(() => this.gameTypes.isLoading());
+    public readonly loading = computed(() => ResourceUtils.isPending(this.gameTypes));
 
     private readonly gameTypesService = inject(GameTypesService);
     private readonly gamesService = inject(GamesService);

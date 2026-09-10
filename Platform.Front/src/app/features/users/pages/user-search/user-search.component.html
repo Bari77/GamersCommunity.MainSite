@@ -11,12 +11,22 @@
         }
     </header>
 
-    @if (directoryStore.searchLoading()) {
-        <div class="user-search__loading" [nbSpinner]="true" nbSpinnerStatus="primary" i18n="@@users.search.loading">
-            Searching players…
-        </div>
-    } @else if (!directoryStore.query()) {
+    @if (!directoryStore.query()) {
         <p class="user-search__empty" i18n="@@users.search.emptyQuery">Enter a term in the header search.</p>
+    } @else if (directoryStore.searchLoading()) {
+        <ul class="user-search__list" aria-busy="true">
+            @for (row of resultPlaceholders; track row) {
+                <li>
+                    <div class="user-search__row user-search__row--skeleton">
+                        <gc-skeleton width="2.75rem" height="2.75rem" shape="circle" />
+                        <span class="user-search__name">
+                            <gc-skeleton width="55%" height="1rem" />
+                        </span>
+                        <gc-skeleton width="5rem" height="0.85rem" />
+                    </div>
+                </li>
+            }
+        </ul>
     } @else if (directoryStore.results.value().length === 0) {
         <p class="user-search__empty" i18n="@@users.search.empty">No players found.</p>
     } @else {

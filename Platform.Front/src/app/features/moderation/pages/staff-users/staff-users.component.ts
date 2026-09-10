@@ -2,7 +2,8 @@ import { DatePipe } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { NbButtonModule, NbInputModule, NbSelectModule, NbSpinnerModule } from "@nebular/theme";
+import { NbButtonModule, NbInputModule, NbSelectModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { ModerationNavComponent } from "../../components/moderation-nav/moderation-nav.component";
 import { StaffUsersStore } from "../../stores/staff-users.store";
@@ -16,7 +17,7 @@ import { StaffUsersStore } from "../../stores/staff-users.store";
         NbButtonModule,
         NbInputModule,
         NbSelectModule,
-        NbSpinnerModule,
+        SkeletonComponent,
         UserHandleComponent,
         ModerationNavComponent,
     ],
@@ -24,6 +25,7 @@ import { StaffUsersStore } from "../../stores/staff-users.store";
     styleUrl: "./staff-users.component.scss",
 })
 export class StaffUsersComponent {
+    public readonly rowPlaceholders = [0, 1, 2, 3, 4];
     public readonly store = inject(StaffUsersStore);
     private readonly router = inject(Router);
 
@@ -32,6 +34,10 @@ export class StaffUsersComponent {
     public sanction = this.store.sanction();
 
     private queryTimer: ReturnType<typeof setTimeout> | null = null;
+
+    public constructor() {
+        void this.store.reload();
+    }
 
     public onQueryChange(value: string): void {
         this.query = value;

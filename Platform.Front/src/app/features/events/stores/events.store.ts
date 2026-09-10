@@ -1,4 +1,5 @@
 import { computed, inject, Injectable, resource, signal } from "@angular/core";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { CommunityEvent } from "../models/event.model";
 import { EventsService } from "../services/events.service";
@@ -22,8 +23,8 @@ export class EventsStore {
         defaultValue: undefined as CommunityEvent | undefined,
     });
 
-    public readonly listLoading = computed(() => this.events.isLoading());
-    public readonly detailLoading = computed(() => this.selectedEvent.isLoading());
+    public readonly listLoading = computed(() => ResourceUtils.isPending(this.events));
+    public readonly detailLoading = computed(() => ResourceUtils.isPending(this.selectedEvent));
 
     private readonly eventsService = inject(EventsService);
     private readonly $selectedPublicId = signal<string | null>(null);

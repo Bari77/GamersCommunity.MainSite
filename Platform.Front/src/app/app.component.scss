@@ -1,15 +1,3 @@
 .app-column {
     position: relative;
 }
-
-.app-loading-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1000;
-    background: var(--background-basic-color-1);
-
-    /* Confine splash (normally position:fixed) to the column overlay. */
-    ::ng-deep .loading-container {
-        position: absolute;
-    }
-}

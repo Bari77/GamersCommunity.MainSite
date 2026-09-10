@@ -42,7 +42,20 @@
     </div>
 
     @if (store.loading()) {
-        <div class="social-page__loading" [nbSpinner]="true" nbSpinnerStatus="primary" nbSpinnerSize="large"></div>
+        <ul class="friend-list" aria-busy="true">
+            @for (row of rowPlaceholders; track row) {
+                <li class="friend-row friend-row--skeleton">
+                    <gc-skeleton width="2.4rem" height="2.4rem" shape="circle" />
+                    <div class="friend-row__meta">
+                        <gc-skeleton width="9rem" height="1.05rem" />
+                        <gc-skeleton width="6rem" height="0.85rem" />
+                    </div>
+                    <span class="friend-row__status">
+                        <gc-skeleton width="8.5rem" height="0.85rem" />
+                    </span>
+                </li>
+            }
+        </ul>
     } @else if (store.rows().length === 0) {
         <p class="social-section__empty" i18n="@@moderation.users.empty">No players match these filters.</p>
     } @else {

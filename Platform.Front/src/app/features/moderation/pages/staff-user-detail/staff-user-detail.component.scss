@@ -79,6 +79,11 @@
     p {
         margin: 0.25rem 0 0;
     }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+    }
 }
 
 .pill {
@@ -87,8 +92,4 @@
     border-radius: 999px;
     background: color-mix(in srgb, var(--gc-accent) 22%, transparent);
     font-size: 0.75rem;
-}
-
-.social-page__loading {
-    min-height: 10rem;
 }

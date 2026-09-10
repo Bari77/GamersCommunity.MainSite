@@ -48,6 +48,8 @@ export default withNativeFederation({
 
     skip: [
         "@bari77/gc-theme",
+        // Ships raw .ts: the Angular compiler must see it, the federation bundler cannot.
+        "@bari77/gc-ui",
         "rxjs/ajax",
         "rxjs/fetch",
         "rxjs/testing",

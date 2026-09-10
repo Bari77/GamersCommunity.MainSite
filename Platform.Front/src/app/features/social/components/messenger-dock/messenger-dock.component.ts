@@ -21,6 +21,7 @@ import {
     NbSpinnerModule,
     NbTooltipModule,
 } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { CreateGroupDialogComponent } from "../create-group-dialog/create-group-dialog.component";
 import { ManageGroupDialogComponent } from "../manage-group-dialog/manage-group-dialog.component";
@@ -36,11 +37,23 @@ const NEAR_TOP_PX = 48;
 @Component({
     standalone: true,
     selector: "app-messenger-dock",
-    imports: [NbButtonModule, NbIconModule, NbSpinnerModule, NbChatModule, NbTooltipModule, DatePipe, UserHandleComponent],
+    imports: [
+        NbButtonModule,
+        NbIconModule,
+        NbSpinnerModule,
+        NbChatModule,
+        NbTooltipModule,
+        DatePipe,
+        SkeletonComponent,
+        UserHandleComponent,
+    ],
     templateUrl: "./messenger-dock.component.html",
     styleUrl: "./messenger-dock.component.scss",
 })
 export class MessengerDockComponent implements OnInit, OnDestroy {
+    public readonly conversationPlaceholders = [0, 1, 2, 3];
+    public readonly contactPlaceholders = [0, 1, 2, 3];
+    public readonly bubblePlaceholders = [0, 1, 2];
     public readonly usersStore = inject(UsersStore);
     public readonly messengerStore = inject(MessengerStore);
     public readonly newMessagesLabel = $localize`:@@social.messenger.newMessages:New messages`;

@@ -103,6 +103,11 @@
     font: inherit;
 }
 
+.notification-bell__item--skeleton {
+    cursor: default;
+    pointer-events: none;
+}
+
 .notification-bell__item:hover {
     background: color-mix(in srgb, var(--gc-accent, #3dd6c6) 10%, transparent);
 }

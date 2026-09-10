@@ -94,16 +94,27 @@
                     i18n-placeholder="@@social.messenger.createGroup.search"
                     placeholder="Search contacts"
                 />
-                <ul class="manage-group__list">
-                    @for (contact of addableContacts(); track contact.publicId) {
-                        <li>
-                            <label class="manage-group__row" [class.is-selected]="isSelected(contact)" (click)="toggle(contact); $event.preventDefault()">
-                                <nb-checkbox status="control" [checked]="isSelected(contact)"></nb-checkbox>
-                                <app-user-handle [nickname]="contact.peerNickname" [discriminator]="contact.peerDiscriminator" />
-                            </label>
-                        </li>
-                    } @empty {
-                        <li class="manage-group__empty" i18n="@@social.messenger.manageGroup.noAddable">No contacts left to add.</li>
+                <ul class="manage-group__list" [attr.aria-busy]="friendsStore.loading()">
+                    @if (friendsStore.loading()) {
+                        @for (item of contactPlaceholders; track item) {
+                            <li>
+                                <div class="manage-group__row manage-group__row--skeleton">
+                                    <gc-skeleton width="1.15rem" height="1.15rem" radius="0.25rem" />
+                                    <gc-skeleton width="8rem" height="0.9rem" />
+                                </div>
+                            </li>
+                        }
+                    } @else {
+                        @for (contact of addableContacts(); track contact.publicId) {
+                            <li>
+                                <label class="manage-group__row" [class.is-selected]="isSelected(contact)" (click)="toggle(contact); $event.preventDefault()">
+                                    <nb-checkbox status="control" [checked]="isSelected(contact)"></nb-checkbox>
+                                    <app-user-handle [nickname]="contact.peerNickname" [discriminator]="contact.peerDiscriminator" />
+                                </label>
+                            </li>
+                        } @empty {
+                            <li class="manage-group__empty" i18n="@@social.messenger.manageGroup.noAddable">No contacts left to add.</li>
+                        }
                     }
                 </ul>
                 <button

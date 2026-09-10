@@ -32,10 +32,6 @@
     }
 }
 
-.social-page__loading {
-    min-height: 10rem;
-}
-
 .social-section__empty {
     color: rgb(160 170 200 / 68%);
 }
@@ -62,6 +58,15 @@
 
     &:hover {
         background: color-mix(in srgb, var(--gc-accent) 8%, transparent);
+    }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+
+        &:hover {
+            background: rgb(255 255 255 / 3%);
+        }
     }
 }
 

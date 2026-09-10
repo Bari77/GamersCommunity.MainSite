@@ -115,6 +115,8 @@
     "core.header.menu.profile": "Profile",
     "core.header.menu.logout": "Logout",
     "users.profile.title": "Profile",
+    "users.profile.gamesSection": "My game profiles",
+    "users.profile.gamesEmpty": "You have no game profile yet. Open a game to create one.",
     "users.profile.avatarSection": "Choose your avatar",
     "users.profile.saveAvatar": "Save avatar",
     "users.profile.loading": "Loading profile…",

@@ -3,6 +3,7 @@ import { Component, effect, inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { PermissionsService } from "@core/services/permissions.service";
 import { NbButtonModule, NbDialogService, NbSelectModule, NbSpinnerModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { firstValueFrom } from "rxjs";
 import {
@@ -18,11 +19,20 @@ import { ModerationReportsBadgeStore } from "../../stores/moderation-reports-bad
 @Component({
     standalone: true,
     selector: "app-staff-reports",
-    imports: [DatePipe, NbButtonModule, NbSelectModule, NbSpinnerModule, UserHandleComponent, ModerationNavComponent],
+    imports: [
+        DatePipe,
+        NbButtonModule,
+        NbSelectModule,
+        NbSpinnerModule,
+        SkeletonComponent,
+        UserHandleComponent,
+        ModerationNavComponent,
+    ],
     templateUrl: "./staff-reports.component.html",
     styleUrl: "./staff-reports.component.scss",
 })
 export class StaffReportsComponent {
+    public readonly rowPlaceholders = [0, 1, 2, 3, 4];
     public readonly store = inject(ReportsStore);
     public readonly permissions = inject(PermissionsService);
     private readonly reportsBadge = inject(ModerationReportsBadgeStore);
@@ -34,6 +44,8 @@ export class StaffReportsComponent {
     private lastOpenCount = -1;
 
     public constructor() {
+        void this.store.reload();
+
         effect(() => {
             const count = this.reportsBadge.openCount();
             if (this.lastOpenCount < 0) {

@@ -1,59 +1,90 @@
 <section class="social-page gc-enter">
     <a routerLink="/moderation/users" nbButton ghost size="small" i18n="@@moderation.detail.back">Back to directory</a>
 
-    @if (store.loading() || !store.detail()) {
-        <div class="social-page__loading" [nbSpinner]="true" nbSpinnerStatus="primary" nbSpinnerSize="large"></div>
-    } @else {
-        @let user = store.detail()!;
-        <header class="detail-head">
+    <header class="detail-head" [attr.aria-busy]="store.detail() ? null : true">
+        @if (store.detail(); as user) {
             <img [src]="user.avatarUrl" [alt]="user.nickname" />
-            <div>
-                <h1 class="gc-display">
+        } @else {
+            <gc-skeleton width="5.5rem" height="5.5rem" shape="circle" />
+        }
+        <div>
+            <h1 class="gc-display">
+                @if (store.detail(); as user) {
                     <app-user-handle [nickname]="user.nickname" [discriminator]="user.discriminator" />
-                </h1>
-                <p>
+                } @else {
+                    <gc-skeleton width="12rem" height="1.9rem" />
+                }
+            </h1>
+            <p>
+                @if (store.detail(); as user) {
                     {{ user.siteRole }}
                     @if (user.sanction !== "none") {
                         · {{ user.sanction }}
                     }
-                </p>
-                <p>
-                    <span i18n="@@moderation.detail.lastSeen">Last connection</span>
+                } @else {
+                    <gc-skeleton width="7rem" height="1rem" />
+                }
+            </p>
+            <p>
+                <span i18n="@@moderation.detail.lastSeen">Last connection</span>
+                @if (store.detail(); as user) {
                     @if (user.lastConnection) {
                         {{ user.lastConnection | date: "medium" }}
                     } @else {
                         —
                     }
-                </p>
-            </div>
-        </header>
-
-        <div class="detail-actions" [nbSpinner]="store.busy()">
-            @if (!isSelf()) {
-                <button type="button" nbButton status="warning" (click)="openSanction('mute')" i18n="@@moderation.action.mute">
-                    Mute
-                </button>
-                @if (permissions.canBan()) {
-                    <button type="button" nbButton status="danger" (click)="openSanction('ban')" i18n="@@moderation.action.ban">
-                        Ban
-                    </button>
+                } @else {
+                    <gc-skeleton width="9rem" height="1rem" />
                 }
-            }
-            <a [routerLink]="['/users', user.publicId]" nbButton ghost status="control" i18n="@@moderation.detail.profile">
-                Public profile
-            </a>
+            </p>
         </div>
+    </header>
 
-        @if (permissions.canManageRanks() && !isSelf()) {
-            <section class="social-section">
-                <h2 class="social-section__title" i18n="@@moderation.detail.ranks">Ranks</h2>
-                <label class="field-label" i18n="@@moderation.detail.siteRole">Site role</label>
+    <div class="detail-actions" [nbSpinner]="store.busy()">
+        @if (!isSelf()) {
+            <button
+                type="button"
+                nbButton
+                status="warning"
+                [disabled]="!store.detail()"
+                (click)="openSanction('mute')"
+                i18n="@@moderation.action.mute"
+            >
+                Mute
+            </button>
+            @if (permissions.canBan()) {
+                <button
+                    type="button"
+                    nbButton
+                    status="danger"
+                    [disabled]="!store.detail()"
+                    (click)="openSanction('ban')"
+                    i18n="@@moderation.action.ban"
+                >
+                    Ban
+                </button>
+            }
+        }
+        <a [routerLink]="['/users', publicId()]" nbButton ghost status="control" i18n="@@moderation.detail.profile">
+            Public profile
+        </a>
+    </div>
+
+    @if (permissions.canManageRanks() && !isSelf()) {
+        <section class="social-section">
+            <h2 class="social-section__title" i18n="@@moderation.detail.ranks">Ranks</h2>
+            <label class="field-label" i18n="@@moderation.detail.siteRole">Site role</label>
+            @if (store.detail(); as user) {
                 <nb-select [selected]="user.siteRole" (selectedChange)="changeSiteRole($event)">
                     <nb-option value="member">member</nb-option>
                     <nb-option value="moderator">moderator</nb-option>
                     <nb-option value="admin">admin</nb-option>
                 </nb-select>
+            } @else {
+                <gc-skeleton width="12rem" height="2.5rem" radius="0.25rem" />
+            }
 
+            @if (store.detail() && !gamesStore.loading()) {
                 @for (game of games(); track game.id) {
                     <label class="field-label">{{ game.title }}</label>
                     <nb-select
@@ -66,11 +97,20 @@
                         <nb-option value="admin">admin</nb-option>
                     </nb-select>
                 }
-            </section>
-        }
+            } @else {
+                <div aria-busy="true">
+                    @for (row of gameRolePlaceholders; track row) {
+                        <label class="field-label"><gc-skeleton width="7rem" height="1rem" /></label>
+                        <gc-skeleton width="12rem" height="2.5rem" radius="0.25rem" />
+                    }
+                </div>
+            }
+        </section>
+    }
 
-        <section class="social-section">
-            <h2 class="social-section__title" i18n="@@moderation.detail.sanctions">Sanctions</h2>
+    <section class="social-section">
+        <h2 class="social-section__title" i18n="@@moderation.detail.sanctions">Sanctions</h2>
+        @if (store.detail(); as user) {
             @if (user.sanctions.length === 0) {
                 <p class="social-section__empty" i18n="@@moderation.detail.noSanctions">No sanction history.</p>
             } @else {
@@ -102,6 +142,19 @@
                     }
                 </ul>
             }
-        </section>
-    }
+        } @else {
+            <ul class="sanction-list" aria-busy="true">
+                @for (row of sanctionPlaceholders; track row) {
+                    <li class="sanction-row sanction-row--skeleton">
+                        <div>
+                            <gc-skeleton width="3.5rem" height="1rem" />
+                            <p><gc-skeleton width="14rem" height="0.9rem" /></p>
+                            <p class="friend-row__status"><gc-skeleton width="18rem" height="0.85rem" /></p>
+                        </div>
+                        <gc-skeleton width="3.25rem" height="1.75rem" radius="0.25rem" />
+                    </li>
+                }
+            </ul>
+        }
+    </section>
 </section>

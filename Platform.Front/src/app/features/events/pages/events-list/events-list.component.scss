@@ -17,10 +17,6 @@
             color: rgb(180 190 220 / 75%);
         }
     }
-
-    &__loading {
-        min-height: 8rem;
-    }
 }
 
 .events-grid {
@@ -46,6 +42,17 @@
     &:hover {
         transform: translateY(-0.15rem);
         border-color: color-mix(in srgb, var(--game-accent) 50%, transparent);
+    }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+
+        .event-card__body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
     }
 
     &__cover {
@@ -76,6 +83,12 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    &__desc-lines {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }
 

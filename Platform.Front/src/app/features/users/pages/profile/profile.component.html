@@ -14,38 +14,67 @@
                         }
                     </div>
                 </div>
+            } @else {
+                <div class="profile-summary profile-summary--skeleton" aria-busy="true">
+                    <gc-skeleton width="5.5rem" height="5.5rem" shape="circle" />
+                    <div class="identity">
+                        <gc-skeleton width="9rem" height="1.25rem" />
+                        <gc-skeleton width="12rem" height="0.9rem" />
+                    </div>
+                </div>
+            }
 
-                <h3 class="section-title" i18n="@@users.profile.avatarSection">Choose your avatar</h3>
-                <div class="avatar-grid" role="listbox" aria-label="Avatars">
-                    @for (id of avatarIds; track id) {
-                        <button
-                            type="button"
-                            class="avatar-option"
-                            [class.selected]="isSelected(id)"
-                            (click)="selectAvatar(id)"
-                            role="option"
-                            [attr.aria-selected]="isSelected(id)"
-                        >
-                            <img [src]="usersStore.avatarUrlForId(id)" [alt]="'Avatar ' + id" />
-                        </button>
+            <h3 class="section-title" i18n="@@users.profile.gamesSection">My game profiles</h3>
+            @if (gameSheets.loading()) {
+                <div class="profile-games" aria-busy="true">
+                    <app-game-tile [skeleton]="true" />
+                </div>
+            } @else if (gameSheets.sheets.value().length > 0) {
+                <div class="profile-games">
+                    @for (sheet of gameSheets.sheets.value(); track sheet.game.id) {
+                        <app-game-tile
+                            [title]="sheet.game.title"
+                            [typeLabel]="sheet.typeLabel"
+                            [iconUrl]="assetsIcon(sheet.game.picture)"
+                            [link]="[playersLink(sheet.game), sheet.playerPublicId]"
+                        />
                     }
                 </div>
-
-                <div class="actions">
-                    <button
-                        nbButton
-                        status="primary"
-                        [disabled]="selectedId() === null || saving()"
-                        [nbSpinner]="saving()"
-                        (click)="save()"
-                        i18n="@@users.profile.saveAvatar"
-                    >
-                        Save avatar
-                    </button>
-                </div>
             } @else {
-                <div class="loading" [nbSpinner]="true" i18n="@@users.profile.loading">Loading profile…</div>
+                <p class="profile-games__empty" i18n="@@users.profile.gamesEmpty">
+                    You have no game profile yet. Open a game to create one.
+                </p>
             }
+
+            <h3 class="section-title" i18n="@@users.profile.avatarSection">Choose your avatar</h3>
+            <div class="avatar-grid" role="listbox" aria-label="Avatars">
+                @for (id of avatarIds; track id) {
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        [class.selected]="isSelected(id)"
+                        [disabled]="profileLoading()"
+                        (click)="selectAvatar(id)"
+                        role="option"
+                        [attr.aria-selected]="isSelected(id)"
+                    >
+                        <img [src]="usersStore.avatarUrlForId(id)" [alt]="'Avatar ' + id" />
+                    </button>
+                }
+            </div>
+
+            <div class="actions">
+                <button
+                    nbButton
+                    status="primary"
+                    [disabled]="profileLoading() || selectedId() === null || saving()"
+                    [nbSpinner]="saving()"
+                    (click)="save()"
+                    i18n="@@users.profile.saveAvatar"
+                >
+                    Save avatar
+                </button>
+            </div>
         </nb-card-body>
     </nb-card>
 </div>

@@ -21,7 +21,7 @@ import {
     NbUserModule,
 } from "@nebular/theme";
 import { AvatarComponent } from "@shared/components/avatar/avatar.component";
-import { SkeletonComponent } from "@shared/components/skeleton/skeleton.component";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 
 @Component({
@@ -49,6 +49,8 @@ import { UserHandleComponent } from "@shared/components/user-handle/user-handle.
     styleUrl: "./header.component.scss",
 })
 export class HeaderComponent {
+    public readonly menuGroupPlaceholders = [0, 1];
+    public readonly menuItemPlaceholders = [0, 1];
     public readonly gamesStore = inject(GamesStore);
     public readonly usersStore = inject(UsersStore);
     public readonly reportsBadge = inject(ModerationReportsBadgeStore);

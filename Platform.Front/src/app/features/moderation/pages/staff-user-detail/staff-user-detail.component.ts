@@ -1,11 +1,12 @@
 import { DatePipe } from "@angular/common";
-import { Component, computed, inject, input } from "@angular/core";
+import { Component, computed, effect, inject, input } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { PermissionsService } from "@core/services/permissions.service";
 import { GamesStore } from "@features/games/stores/games.store";
 import { UsersStore } from "@features/users/stores/users.store";
 import { NbButtonModule, NbDialogService, NbSelectModule, NbSpinnerModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { firstValueFrom } from "rxjs";
 import {
@@ -24,12 +25,15 @@ import { StaffUserDetailStore } from "../../stores/staff-user-detail.store";
         NbButtonModule,
         NbSelectModule,
         NbSpinnerModule,
+        SkeletonComponent,
         UserHandleComponent,
     ],
     templateUrl: "./staff-user-detail.component.html",
     styleUrl: "./staff-user-detail.component.scss",
 })
 export class StaffUserDetailComponent {
+    public readonly gameRolePlaceholders = [0, 1, 2];
+    public readonly sanctionPlaceholders = [0, 1, 2];
     public readonly publicId = input.required<string>();
     public readonly store = inject(StaffUserDetailStore);
     public readonly permissions = inject(PermissionsService);
@@ -40,6 +44,15 @@ export class StaffUserDetailComponent {
     public readonly games = computed(() =>
         (this.gamesStore.gameTypes.value() ?? []).flatMap((type) => type.games),
     );
+
+    public constructor() {
+        effect(() => {
+            const publicId = this.publicId();
+            if (publicId) {
+                void this.store.load(publicId);
+            }
+        });
+    }
 
     public isSelf(): boolean {
         return this.usersStore.user()?.publicId === this.publicId();

@@ -3,18 +3,19 @@ import { Router } from "@angular/router";
 import { GameVideoComponent } from "@core/layout/splash/components/game-video/game-video.component";
 import { GamesStore } from "@features/games/stores/games.store";
 import { UsersStore } from "@features/users/stores/users.store";
-import { NbButtonModule, NbIconModule } from "@nebular/theme";
-import { SkeletonComponent } from "@shared/components/skeleton/skeleton.component";
+import { NbButtonModule } from "@nebular/theme";
+import { GameTileComponent } from "@shared/components/game-tile/game-tile.component";
 import { environment } from "environments/environment";
 
 @Component({
     standalone: true,
     selector: "app-home-container",
-    imports: [GameVideoComponent, NbButtonModule, NbIconModule, SkeletonComponent],
+    imports: [GameVideoComponent, NbButtonModule, GameTileComponent],
     templateUrl: "./home-container.component.html",
     styleUrl: "./home-container.component.scss",
 })
 export class HomeContainerComponent {
+    public readonly tilePlaceholders = [0, 1, 2, 3, 4, 5];
     public readonly gamesStore = inject(GamesStore);
     public readonly usersStore = inject(UsersStore);
     private readonly router = inject(Router);

@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, resource, signal } from "@angular/core";
 import { UsersStore } from "@features/users/stores/users.store";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { EventRsvpStatusIdValue } from "../models/event-rsvp-status";
 import { EventsUsersInterest } from "../models/events-users-interest.model";
@@ -20,7 +21,7 @@ export class EventsUsersInterestsStore {
         defaultValue: [] as EventsUsersInterest[],
     });
 
-    public readonly loading = computed(() => this.interests.isLoading());
+    public readonly loading = computed(() => ResourceUtils.isPending(this.interests));
     public readonly saving = computed(() => this.$saving());
 
     private readonly $saving = signal(false);

@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsersStore } from "@features/users/stores/users.store";
 import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogRef, NbInputModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { Conversation } from "../../models/conversation.model";
 import { Friend } from "../../models/friend.model";
@@ -13,15 +14,13 @@ import { MessengerStore } from "../../stores/messenger.store";
     selector: "app-manage-group-dialog",
     templateUrl: "./manage-group-dialog.component.html",
     styleUrl: "./manage-group-dialog.component.scss",
-    imports: [FormsModule, NbCardModule, NbButtonModule, NbInputModule, NbCheckboxModule, UserHandleComponent],
+    imports: [FormsModule, NbCardModule, NbButtonModule, NbInputModule, NbCheckboxModule, SkeletonComponent, UserHandleComponent],
 })
 export class ManageGroupDialogComponent {
-    public set initial(conversation: Conversation) {
-        this.setConversation(conversation);
-    }
-
+    public readonly contactPlaceholders = [0, 1, 2, 3];
     public readonly conversation = signal<Conversation | null>(null);
     public readonly usersStore = inject(UsersStore);
+    public readonly friendsStore = inject(FriendsStore);
     public readonly title = signal("");
     public readonly selectedAvatarId = signal<number | null>(null);
     public readonly addQuery = signal("");
@@ -49,9 +48,12 @@ export class ManageGroupDialogComponent {
     public readonly pendingDelete = signal(false);
     public readonly deleting = signal(false);
 
-    private readonly friendsStore = inject(FriendsStore);
     private readonly messengerStore = inject(MessengerStore);
     private readonly dialogRef = inject(NbDialogRef<ManageGroupDialogComponent>);
+
+    public set initial(conversation: Conversation) {
+        this.setConversation(conversation);
+    }
 
     public setConversation(conversation: Conversation): void {
         this.conversation.set(conversation);

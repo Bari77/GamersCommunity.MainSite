@@ -1,5 +1,7 @@
 import { Routes } from "@angular/router";
+import { GameRemoteShellComponent } from "@core/federation/components/game-remote-shell/game-remote-shell.component";
 import { loadRemoteRoutes } from "@core/federation/load-remote-routes";
+import { HomeContainerComponent } from "./features/home/pages/home-container/home-container.component";
 
 export const appRoutes: Routes = [
     {
@@ -13,7 +15,7 @@ export const appRoutes: Routes = [
     },
     {
         path: "home",
-        loadChildren: () => import("./features/home/home.routes").then((r) => r.homeRoutes),
+        component: HomeContainerComponent,
     },
     {
         path: "events",
@@ -33,6 +35,7 @@ export const appRoutes: Routes = [
     },
     {
         path: "world-of-warcraft",
+        component: GameRemoteShellComponent,
         loadChildren: () => loadRemoteRoutes("worldOfWarcraft", "./Routes", "worldOfWarcraftRoutes"),
     },
     {

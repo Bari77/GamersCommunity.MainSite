@@ -66,6 +66,11 @@
     background: rgb(255 255 255 / 4%);
 }
 
+.manage-group__row--skeleton {
+    cursor: default;
+    pointer-events: none;
+}
+
 .manage-group__avatar {
     width: 1.75rem;
     height: 1.75rem;

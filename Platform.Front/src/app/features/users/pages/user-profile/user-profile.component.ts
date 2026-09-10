@@ -1,19 +1,25 @@
 import { DatePipe } from "@angular/common";
-import { Component, computed, effect, inject, input, signal } from "@angular/core";
+import { Component, computed, effect, inject, input, resource } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
     ReportDialogComponent,
     ReportDialogResult,
 } from "@features/moderation/components/report-dialog/report-dialog.component";
 import { ReportsService } from "@features/moderation/services/reports.service";
+import { Game } from "@features/games/models/game.model";
+import { GamePlayerSheet } from "@features/games/models/game-player-sheet.model";
+import { GamePlayersService } from "@features/games/services/game-players.service";
 import { GamesStore } from "@features/games/stores/games.store";
-import { WowPlayersService } from "@features/games/services/wow-players.service";
+import { toGameRootPath } from "@features/games/utils/game-url.util";
 import { FriendRelationKind, FriendsStore } from "@features/social/stores/friends.store";
 import { MessengerStore } from "@features/social/stores/messenger.store";
 import { UsersStore } from "@features/users/stores/users.store";
 import { isUserOnline } from "@features/users/utils/presence.util";
 import { NbButtonModule, NbDialogService, NbIconModule, NbSpinnerModule, NbToastrService } from "@nebular/theme";
+import { GameTileComponent } from "@shared/components/game-tile/game-tile.component";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { firstValueFrom } from "rxjs";
 import { environment } from "environments/environment";
 import { PublicUser } from "../../models/public-user.model";
@@ -22,7 +28,16 @@ import { UserDirectoryStore } from "../../stores/user-directory.store";
 @Component({
     standalone: true,
     selector: "app-user-profile",
-    imports: [NbButtonModule, NbIconModule, NbSpinnerModule, DatePipe, RouterLink, UserHandleComponent],
+    imports: [
+        NbButtonModule,
+        NbIconModule,
+        NbSpinnerModule,
+        DatePipe,
+        RouterLink,
+        GameTileComponent,
+        SkeletonComponent,
+        UserHandleComponent,
+    ],
     templateUrl: "./user-profile.component.html",
     styleUrl: "./user-profile.component.scss",
 })
@@ -32,21 +47,27 @@ export class UserProfileComponent {
     public readonly usersStore = inject(UsersStore);
     public readonly friendsStore = inject(FriendsStore);
     public readonly messengerStore = inject(MessengerStore);
-    public readonly wowPlayerPublicId = signal<string | null>(null);
     public readonly gamesStore = inject(GamesStore);
-    public readonly wowGameTile = computed(() => {
-        for (const type of this.gamesStore.gameTypes.value()) {
-            for (const game of type.games) {
-                if (game.urlValue.includes("world-of-warcraft")) {
-                    return { game, typeLabel: type.entitled };
-                }
+    public readonly gameSheets = resource({
+        // Tant que le catalogue n'est pas résolu, aucun paramètre : la resource reste `idle` plutôt que
+        // de boucler sur une liste de jeux vide.
+        params: () => {
+            if (this.gamesStore.loading()) {
+                return undefined;
             }
-        }
-        return null;
+
+            return { platformUserPublicId: this.publicId(), gameTypes: this.gamesStore.gameTypes.value() };
+        },
+        loader: ({ params }) =>
+            firstValueFrom(this.gamePlayersService.resolveCatalog(params.gameTypes, params.platformUserPublicId)),
+        defaultValue: [] as GamePlayerSheet[],
     });
+    public readonly gamesSectionLoading = computed(
+        () => ResourceUtils.isPending(this.gameSheets) || this.gamesStore.loading(),
+    );
     private readonly dialogs = inject(NbDialogService);
     private readonly reports = inject(ReportsService);
-    private readonly wowPlayers = inject(WowPlayersService);
+    private readonly gamePlayersService = inject(GamePlayersService);
     private readonly toastr = inject(NbToastrService);
 
     public constructor() {
@@ -58,11 +79,6 @@ export class UserProfileComponent {
             if (this.usersStore.isLoggedIn()) {
                 this.friendsStore.reload();
             }
-        });
-
-        effect(() => {
-            const id = this.publicId();
-            void this.loadWowSheet(id);
         });
     }
 
@@ -76,6 +92,10 @@ export class UserProfileComponent {
 
     public assetsIcon(picture: string): string {
         return `${environment.assetsBaseUrl}/Icons/Games/${picture}.png`;
+    }
+
+    public playersLink(game: Game): string {
+        return `${toGameRootPath(game.urlValue)}/players`;
     }
 
     public relationKind(user: PublicUser): FriendRelationKind {
@@ -141,15 +161,5 @@ export class UserProfileComponent {
             $localize`:@@moderation.report.sent:Thanks, the staff will review it.`,
             $localize`:@@moderation.report.sentTitle:Report sent`,
         );
-    }
-
-    private async loadWowSheet(platformUserPublicId: string): Promise<void> {
-        this.wowPlayerPublicId.set(null);
-        try {
-            const result = await firstValueFrom(this.wowPlayers.resolve(platformUserPublicId));
-            this.wowPlayerPublicId.set(result.hasSheet ? result.playerPublicId : null);
-        } catch {
-            this.wowPlayerPublicId.set(null);
-        }
     }
 }

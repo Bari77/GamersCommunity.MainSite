@@ -6,11 +6,6 @@
     <nb-layout-column class="app-column">
         <router-outlet />
         <app-mute-banner />
-        @if (isLoading()) {
-            <div class="app-loading-overlay">
-                <app-loading [message]="loadingMessage()" />
-            </div>
-        }
     </nb-layout-column>
 
     <nb-layout-footer fixed>

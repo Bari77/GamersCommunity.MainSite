@@ -31,7 +31,6 @@
     }
 }
 
-.social-page__loading,
 .social-section__empty {
     min-height: 4rem;
     color: rgb(160 170 200 / 68%);
@@ -54,6 +53,11 @@
 
     p {
         margin: 0.55rem 0 0;
+    }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
     }
 }
 

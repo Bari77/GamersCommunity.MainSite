@@ -1,4 +1,5 @@
 import { computed, inject, Injectable, resource, signal } from "@angular/core";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { PublicUser } from "../models/public-user.model";
 import { UsersService } from "../users.service";
@@ -29,8 +30,8 @@ export class UserDirectoryStore {
     });
 
     public readonly query = computed(() => this.$query());
-    public readonly searchLoading = computed(() => this.results.isLoading());
-    public readonly profileLoading = computed(() => this.selected.isLoading());
+    public readonly searchLoading = computed(() => ResourceUtils.isPending(this.results));
+    public readonly profileLoading = computed(() => ResourceUtils.isPending(this.selected));
 
     private readonly usersService = inject(UsersService);
     private readonly $query = signal("");

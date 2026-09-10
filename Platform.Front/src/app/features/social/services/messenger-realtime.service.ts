@@ -21,21 +21,6 @@ const RETRY_CAP_MS = 30_000;
 
 @Injectable({ providedIn: "root" })
 export class MessengerRealtimeService {
-    public readonly status = computed(() => this.$status());
-    public readonly isLive = computed(() => this.$status() === "connected");
-    public readonly isConnecting = computed(() => this.$status() === "connecting");
-
-    public readonly offlineMessage = computed(() => {
-        switch (this.$status()) {
-            case "connecting":
-                return $localize`:@@social.messenger.realtime.connecting:Connecting to live whispers…`;
-            case "offline":
-                return $localize`:@@social.messenger.realtime.offline:Live whispers are unavailable. Sending is disabled until the link is restored.`;
-            default:
-                return "";
-        }
-    });
-
     private readonly authService = inject(NbAuthService);
     private readonly usersStore = inject(UsersStore);
     private readonly messagesStore = inject(MessagesStore);
@@ -51,6 +36,21 @@ export class MessengerRealtimeService {
     private wantConnected = false;
     private retryAttempt = 0;
     private retryTimer: ReturnType<typeof setTimeout> | null = null;
+
+    public readonly status = computed(() => this.$status());
+    public readonly isLive = computed(() => this.$status() === "connected");
+    public readonly isConnecting = computed(() => this.$status() === "connecting");
+
+    public readonly offlineMessage = computed(() => {
+        switch (this.$status()) {
+            case "connecting":
+                return $localize`:@@social.messenger.realtime.connecting:Connecting to live whispers…`;
+            case "offline":
+                return $localize`:@@social.messenger.realtime.offline:Live whispers are unavailable. Sending is disabled until the link is restored.`;
+            default:
+                return "";
+        }
+    });
 
     public constructor() {
         effect(() => {

@@ -9,6 +9,15 @@
     align-items: center;
     gap: 1.25rem;
     margin-bottom: 1.75rem;
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
+
+        .identity {
+            gap: 0.5rem;
+        }
+    }
 }
 
 .preview {
@@ -49,6 +58,19 @@
     font-weight: 600;
 }
 
+.profile-games {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+
+    &__empty {
+        margin: 0 0 1.75rem;
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+}
+
 .avatar-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -84,16 +106,21 @@
     &.selected {
         border-color: var(--button-filled-primary-background-color, #3366ff);
     }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.55;
+
+        &:hover {
+            transform: none;
+        }
+    }
 }
 
 .actions {
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-end;
-}
-
-.loading {
-    min-height: 6rem;
 }
 
 @media (max-width: 480px) {

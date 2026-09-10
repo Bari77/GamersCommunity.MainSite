@@ -45,6 +45,11 @@
     background: rgb(255 255 255 / 4%);
 }
 
+.create-group__row--skeleton {
+    cursor: default;
+    pointer-events: none;
+}
+
 :host ::ng-deep .create-group__row nb-checkbox,
 :host ::ng-deep .create-group__row .label {
     pointer-events: none;

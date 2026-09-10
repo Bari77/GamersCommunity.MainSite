@@ -14,7 +14,23 @@
     </div>
 
     @if (store.loading()) {
-        <div class="social-page__loading" [nbSpinner]="true" nbSpinnerStatus="primary" nbSpinnerSize="large"></div>
+        <ul class="report-list" aria-busy="true">
+            @for (row of rowPlaceholders; track row) {
+                <li class="report-card report-card--skeleton">
+                    <div class="report-card__head">
+                        <gc-skeleton width="9rem" height="1rem" />
+                        <gc-skeleton width="8rem" height="0.85rem" />
+                    </div>
+                    <p><gc-skeleton width="60%" height="1rem" /></p>
+                    <p class="report-card__meta"><gc-skeleton width="40%" height="0.85rem" /></p>
+                    <div class="detail-actions">
+                        <gc-skeleton width="4.5rem" height="2rem" radius="0.375rem" />
+                        <gc-skeleton width="4rem" height="2rem" radius="0.375rem" />
+                        <gc-skeleton width="5.5rem" height="2rem" radius="0.375rem" />
+                    </div>
+                </li>
+            }
+        </ul>
     } @else if (store.rows().length === 0) {
         <p class="social-section__empty" i18n="@@moderation.reports.empty">No reports in this queue.</p>
     } @else {

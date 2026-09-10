@@ -6,8 +6,103 @@
         <base href="/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                min-height: 100%;
+                background: #06060c;
+            }
+
+            #app-splash {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                background: radial-gradient(circle at center, #101020 0%, #06060c 100%);
+                color: #9aa7ff;
+                transition: opacity 0.2s ease;
+            }
+
+            #app-splash.is-hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            #app-splash img {
+                height: min(20vh, 8rem);
+                margin-bottom: 1rem;
+                animation: gc-splash-pulse 1.8s infinite ease-in-out;
+            }
+
+            #app-splash h1 {
+                margin: 0 0 1rem;
+                font-family: system-ui, sans-serif;
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: #66aaff;
+                text-shadow: 0 0 15px rgb(102 170 255 / 60%);
+            }
+
+            #app-splash p {
+                margin: 0;
+                font-family: system-ui, sans-serif;
+                font-size: 1.05rem;
+                letter-spacing: 0.06em;
+                animation: gc-splash-blink 1.2s infinite steps(2, start);
+            }
+
+            #app-splash .glow {
+                position: absolute;
+                width: 200%;
+                height: 100vh;
+                background: linear-gradient(90deg, transparent, #4f9fff44, transparent);
+                animation: gc-splash-glow 5s linear infinite;
+                opacity: 0.3;
+            }
+
+            @keyframes gc-splash-pulse {
+                0%,
+                100% {
+                    filter: drop-shadow(0 0 10px #66aaff);
+                    opacity: 1;
+                }
+
+                50% {
+                    filter: drop-shadow(0 0 30px #66aaff);
+                    opacity: 0.7;
+                }
+            }
+
+            @keyframes gc-splash-blink {
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            @keyframes gc-splash-glow {
+                0% {
+                    transform: translateX(-100%);
+                }
+
+                100% {
+                    transform: translateX(100%);
+                }
+            }
+        </style>
     </head>
     <body>
+        <div id="app-splash" aria-live="polite" aria-busy="true">
+            <img src="logo.png" alt="" />
+            <h1>Gamers Community</h1>
+            <p>Loading…</p>
+            <div class="glow" aria-hidden="true"></div>
+        </div>
         <app></app>
     </body>
 </html>

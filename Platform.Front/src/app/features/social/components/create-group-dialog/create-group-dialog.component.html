@@ -11,28 +11,40 @@
             placeholder="Search contacts"
         />
 
-        <ul class="create-group__list">
-            @for (contact of contacts(); track contact.publicId) {
-                <li>
-                    <button
-                        type="button"
-                        class="create-group__row"
-                        [class.is-selected]="isSelected(contact)"
-                        (click)="toggle(contact)"
-                    >
-                        <nb-checkbox status="control" [checked]="isSelected(contact)"></nb-checkbox>
-                        @if (contact.peerAvatarUrl) {
-                            <img class="create-group__avatar" [src]="contact.peerAvatarUrl" [alt]="contact.peerNickname" />
-                        } @else {
-                            <span class="create-group__avatar create-group__avatar--fallback">{{
-                                contact.peerNickname.charAt(0)
-                            }}</span>
-                        }
-                        <app-user-handle [nickname]="contact.peerNickname" [discriminator]="contact.peerDiscriminator" />
-                    </button>
-                </li>
-            } @empty {
-                <li class="create-group__empty" i18n="@@social.messenger.createGroup.empty">No matching contacts.</li>
+        <ul class="create-group__list" [attr.aria-busy]="friendsStore.loading()">
+            @if (friendsStore.loading()) {
+                @for (item of contactPlaceholders; track item) {
+                    <li>
+                        <div class="create-group__row create-group__row--skeleton">
+                            <gc-skeleton width="1.15rem" height="1.15rem" radius="0.25rem" />
+                            <gc-skeleton width="1.85rem" height="1.85rem" shape="circle" />
+                            <gc-skeleton width="8rem" height="0.9rem" />
+                        </div>
+                    </li>
+                }
+            } @else {
+                @for (contact of contacts(); track contact.publicId) {
+                    <li>
+                        <button
+                            type="button"
+                            class="create-group__row"
+                            [class.is-selected]="isSelected(contact)"
+                            (click)="toggle(contact)"
+                        >
+                            <nb-checkbox status="control" [checked]="isSelected(contact)"></nb-checkbox>
+                            @if (contact.peerAvatarUrl) {
+                                <img class="create-group__avatar" [src]="contact.peerAvatarUrl" [alt]="contact.peerNickname" />
+                            } @else {
+                                <span class="create-group__avatar create-group__avatar--fallback">{{
+                                    contact.peerNickname.charAt(0)
+                                }}</span>
+                            }
+                            <app-user-handle [nickname]="contact.peerNickname" [discriminator]="contact.peerDiscriminator" />
+                        </button>
+                    </li>
+                } @empty {
+                    <li class="create-group__empty" i18n="@@social.messenger.createGroup.empty">No matching contacts.</li>
+                }
             }
         </ul>
 

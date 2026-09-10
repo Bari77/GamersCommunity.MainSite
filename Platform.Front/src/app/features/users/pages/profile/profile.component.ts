@@ -1,20 +1,35 @@
 import { Component, computed, inject, signal } from "@angular/core";
+import { Game } from "@features/games/models/game.model";
+import { GameSheetsStore } from "@features/games/stores/game-sheets.store";
+import { toGameRootPath } from "@features/games/utils/game-url.util";
 import { UsersStore } from "@features/users/stores/users.store";
 import { NbButtonModule, NbCardModule, NbSpinnerModule } from "@nebular/theme";
+import { GameTileComponent } from "@shared/components/game-tile/game-tile.component";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
+import { environment } from "environments/environment";
 
 @Component({
     standalone: true,
     selector: "app-profile",
-    imports: [NbCardModule, NbButtonModule, NbSpinnerModule, UserHandleComponent],
+    imports: [
+        NbCardModule,
+        NbButtonModule,
+        NbSpinnerModule,
+        GameTileComponent,
+        SkeletonComponent,
+        UserHandleComponent,
+    ],
     templateUrl: "./profile.component.html",
     styleUrls: ["./profile.component.scss"],
 })
 export class ProfileComponent {
     public readonly usersStore = inject(UsersStore);
+    public readonly gameSheets = inject(GameSheetsStore);
     public readonly avatarIds = this.usersStore.listAvatarIds();
     public readonly selectedId = signal<number | null>(null);
     public readonly saving = signal(false);
+    public readonly profileLoading = computed(() => !this.usersStore.user());
 
     public readonly previewUrl = computed(() => {
         const id = this.selectedId();
@@ -23,6 +38,14 @@ export class ProfileComponent {
         }
         return this.usersStore.user()?.avatarUrl ?? "";
     });
+
+    public assetsIcon(picture: string): string {
+        return `${environment.assetsBaseUrl}/Icons/Games/${picture}.png`;
+    }
+
+    public playersLink(game: Game): string {
+        return `${toGameRootPath(game.urlValue)}/players`;
+    }
 
     public selectAvatar(id: number): void {
         this.selectedId.set(id);

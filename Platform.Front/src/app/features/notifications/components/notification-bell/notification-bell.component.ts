@@ -13,15 +13,17 @@ import {
     localizeNotificationTitle,
 } from "@features/notifications/utils/notification-copy.util";
 import { NbButtonModule, NbIconModule, NbTooltipModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 
 @Component({
     standalone: true,
     selector: "app-notification-bell",
-    imports: [NbButtonModule, NbIconModule, NbTooltipModule],
+    imports: [NbButtonModule, NbIconModule, NbTooltipModule, SkeletonComponent],
     templateUrl: "./notification-bell.component.html",
     styleUrl: "./notification-bell.component.scss",
 })
 export class NotificationBellComponent {
+    public readonly itemPlaceholders = [0, 1, 2];
     public readonly notificationsStore = inject(NotificationsStore);
     public readonly isOpen = signal(false);
     public readonly panelTop = signal(0);

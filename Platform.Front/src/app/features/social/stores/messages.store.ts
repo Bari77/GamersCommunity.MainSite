@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, resource, signal } from "@angular/core";
 import { UsersStore } from "@features/users/stores/users.store";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { Conversation } from "../models/conversation.model";
 import { DirectMessage } from "../models/message.model";
@@ -21,7 +22,7 @@ export class MessagesStore {
         defaultValue: [] as Conversation[],
     });
 
-    public readonly loading = computed(() => this.conversations.isLoading());
+    public readonly loading = computed(() => ResourceUtils.isPending(this.conversations));
     public readonly sending = computed(() => this.$sending());
     public readonly isEmpty = computed(() => this.conversations.value().length === 0);
     public readonly unreadCount = computed(() =>

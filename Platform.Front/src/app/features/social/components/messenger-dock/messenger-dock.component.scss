@@ -151,6 +151,12 @@
     background: color-mix(in srgb, var(--gc-accent) 8%, transparent);
 }
 
+.messenger-dock__row--skeleton,
+.messenger-dock__contact--skeleton {
+    cursor: default;
+    pointer-events: none;
+}
+
 .messenger-dock__avatar {
     display: grid;
     place-items: center;
@@ -270,6 +276,17 @@
     padding: 0.45rem 0.65rem 0.4rem;
     border-radius: 0.85rem;
     background: rgb(255 255 255 / 7%);
+}
+
+.messenger-dock__bubble--skeleton {
+    cursor: default;
+    pointer-events: none;
+}
+
+.messenger-dock__bubble--skeleton .messenger-dock__bubble-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
 .messenger-dock__bubble.is-mine .messenger-dock__bubble-body {

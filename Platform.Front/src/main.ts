@@ -1,3 +1,5 @@
+(globalThis as { ngDevMode?: boolean }).ngDevMode ??= true;
+
 import { initFederation } from "@angular-architects/native-federation-v4";
 
 initFederation("federation.manifest.json")

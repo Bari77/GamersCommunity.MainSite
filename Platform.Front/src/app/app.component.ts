@@ -1,9 +1,7 @@
-import { Component, computed, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from "@core/layout/footer/components/footer/footer.component";
 import { HeaderComponent } from "@core/layout/header/components/header/header.component";
-import { LoadingComponent } from "@core/layout/splash/components/loading/loading.component";
-import { LoadingStore } from "@core/stores/loading.store";
 import { MuteBannerComponent } from "@features/moderation/components/mute-banner/mute-banner.component";
 import { MessengerDockComponent } from "@features/social/components/messenger-dock/messenger-dock.component";
 import { MessengerRealtimeService } from "@features/social/services/messenger-realtime.service";
@@ -20,7 +18,6 @@ import { firstValueFrom, interval, map } from "rxjs";
         NbLayoutModule,
         HeaderComponent,
         FooterComponent,
-        LoadingComponent,
         MessengerDockComponent,
         MuteBannerComponent,
     ],
@@ -28,19 +25,11 @@ import { firstValueFrom, interval, map } from "rxjs";
     styleUrl: "./app.component.scss",
 })
 export class AppComponent {
-    public readonly isLoading = computed(() => this.loadingStore.loading());
-    public readonly loadingMessage = computed(
-        () => this.loadingStore.message() ?? $localize`:@@core.layout.loading.message:Loading...`,
-    );
-
-    private readonly loadingStore = inject(LoadingStore);
     private readonly authService = inject(NbAuthService);
     private readonly messengerRealtime = inject(MessengerRealtimeService);
     private readonly presenceHeartbeat = inject(PresenceHeartbeatService);
 
     public constructor() {
-        void this.messengerRealtime;
-        void this.presenceHeartbeat;
         const refreshSkewMs = 120_000;
         interval(30_000).subscribe(async () => {
             const token = await firstValueFrom(

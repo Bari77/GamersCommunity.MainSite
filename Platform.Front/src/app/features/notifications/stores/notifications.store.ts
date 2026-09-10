@@ -1,5 +1,6 @@
 import { computed, inject, Injectable, resource } from "@angular/core";
 import { UsersStore } from "@features/users/stores/users.store";
+import { ResourceUtils } from "@shared/utils/resource.utils";
 import { catchError, firstValueFrom, of } from "rxjs";
 import { AppNotification } from "../models/notification.model";
 import { NotificationsService } from "../services/notifications.service";
@@ -19,7 +20,7 @@ export class NotificationsStore {
         defaultValue: [] as AppNotification[],
     });
 
-    public readonly loading = computed(() => this.notifications.isLoading());
+    public readonly loading = computed(() => ResourceUtils.isPending(this.notifications));
     public readonly unreadCount = computed(
         () => this.notifications.value().filter((item) => !item.isRead).length,
     );

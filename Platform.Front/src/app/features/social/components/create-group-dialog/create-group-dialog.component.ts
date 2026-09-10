@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsersStore } from "@features/users/stores/users.store";
 import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogRef, NbInputModule } from "@nebular/theme";
+import { SkeletonComponent } from "@bari77/gc-ui";
 import { UserHandleComponent } from "@shared/components/user-handle/user-handle.component";
 import { Friend } from "../../models/friend.model";
 import { FriendsStore } from "../../stores/friends.store";
@@ -11,10 +12,12 @@ import { FriendsStore } from "../../stores/friends.store";
     selector: "app-create-group-dialog",
     templateUrl: "./create-group-dialog.component.html",
     styleUrl: "./create-group-dialog.component.scss",
-    imports: [FormsModule, NbCardModule, NbButtonModule, NbInputModule, NbCheckboxModule, UserHandleComponent],
+    imports: [FormsModule, NbCardModule, NbButtonModule, NbInputModule, NbCheckboxModule, SkeletonComponent, UserHandleComponent],
 })
 export class CreateGroupDialogComponent {
+    public readonly contactPlaceholders = [0, 1, 2, 3];
     public readonly usersStore = inject(UsersStore);
+    public readonly friendsStore = inject(FriendsStore);
     public readonly query = signal("");
     public readonly title = signal("");
     public readonly selectedIds = signal<Set<number>>(new Set());
@@ -37,7 +40,6 @@ export class CreateGroupDialogComponent {
     public readonly isGroup = computed(() => this.selectedCount() >= 2);
     public readonly canSubmit = computed(() => this.selectedCount() >= 1);
 
-    private readonly friendsStore = inject(FriendsStore);
     private readonly dialogRef = inject(NbDialogRef<CreateGroupDialogComponent>);
 
     public isSelected(friend: Friend): boolean {

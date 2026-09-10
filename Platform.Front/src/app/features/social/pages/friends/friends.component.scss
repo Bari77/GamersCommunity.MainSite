@@ -18,10 +18,6 @@
         }
     }
 
-    &__loading {
-        min-height: 10rem;
-    }
-
     &__sections {
         display: grid;
         gap: var(--gc-card-grid-gap);
@@ -69,6 +65,11 @@
 
     &:hover {
         background: color-mix(in srgb, var(--gc-accent) 8%, transparent);
+    }
+
+    &--skeleton {
+        cursor: default;
+        pointer-events: none;
     }
 
     &__avatar {

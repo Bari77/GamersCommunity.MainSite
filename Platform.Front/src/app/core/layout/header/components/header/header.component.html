@@ -17,56 +17,63 @@
             nbTooltipPlacement="bottom"
             type="modal-zoomin"
         ></nb-search>
-        @if (gamesStore.loading()) {
-            <app-skeleton width="5.5rem" height="2.5rem" radius="0.25rem" />
-        } @else {
-            <button
-                [nbPopover]="gamesMenuTemplate"
-                nbPopoverTrigger="click"
-                nbPopoverPlacement="bottom"
-                i18n="@@core.header.games"
-                nbButton
-                ghost
-                status="control"
-            >
-                Games
-            </button>
-        }
+        <button
+            [nbPopover]="gamesMenuTemplate"
+            nbPopoverTrigger="click"
+            nbPopoverPlacement="bottom"
+            i18n="@@core.header.games"
+            nbButton
+            ghost
+            status="control"
+        >
+            Games
+        </button>
         <button type="button" (click)="redirect('/events')" nbButton ghost status="control" i18n="@@core.header.events">
             Events
         </button>
-        @if (usersStore.isLoggedIn()) {
-            <button
-                type="button"
-                (click)="redirect('/social/friends')"
-                nbButton
-                ghost
-                status="control"
-                i18n="@@core.header.friends"
-            >
-                Friends
-            </button>
-        }
-        @if (usersStore.isStaff()) {
-            <button
-                type="button"
-                class="header-moderation"
-                (click)="redirect('/moderation/users')"
-                nbButton
-                ghost
-                status="control"
-                i18n="@@core.header.moderation"
-            >
-                Moderation
-                @if (reportsBadge.openCount() > 0) {
-                    <span class="header-moderation__badge">{{ reportsBadge.openCount() }}</span>
-                }
-            </button>
+        @if (!usersStore.sessionResolved()) {
+            <gc-skeleton width="5.5rem" height="2.5rem" radius="0.25rem" />
+        } @else {
+            @if (usersStore.isLoggedIn()) {
+                <button
+                    type="button"
+                    (click)="redirect('/social/friends')"
+                    nbButton
+                    ghost
+                    status="control"
+                    i18n="@@core.header.friends"
+                >
+                    Friends
+                </button>
+            }
+            @if (usersStore.isStaff()) {
+                <button
+                    type="button"
+                    class="header-moderation"
+                    (click)="redirect('/moderation/users')"
+                    nbButton
+                    ghost
+                    status="control"
+                    i18n="@@core.header.moderation"
+                >
+                    Moderation
+                    @if (reportsBadge.openCount() > 0) {
+                        <span class="header-moderation__badge">{{ reportsBadge.openCount() }}</span>
+                    }
+                </button>
+            }
         }
     </div>
 
     <div class="right">
-        @if (usersStore.isLoggedIn()) {
+        @if (!usersStore.sessionResolved()) {
+            <gc-skeleton width="2.5rem" height="2.5rem" shape="circle" />
+            <div class="nickname-container nickname-container--skeleton" aria-busy="true">
+                <gc-skeleton width="7rem" height="1.4rem" />
+                <gc-skeleton width="2.75rem" height="1rem" />
+            </div>
+            <gc-skeleton width="3.75rem" height="3.75rem" shape="circle" />
+        } @else if (usersStore.isLoggedIn()) {
             <app-notification-bell></app-notification-bell>
             <div
                 [nbTooltip]="copied() ? 'Copied' : 'Copy'"
@@ -110,6 +117,22 @@
 
 <ng-template #gamesMenuTemplate>
     <div class="custom-menu">
+        @if (gamesStore.loading()) {
+            @for (group of menuGroupPlaceholders; track group) {
+                <div class="menu-group" aria-busy="true">
+                    <div class="menu-group-title">
+                        <gc-skeleton width="6rem" height="0.7rem" />
+                    </div>
+
+                    @for (item of menuItemPlaceholders; track item) {
+                        <div class="menu-item menu-item--skeleton">
+                            <gc-skeleton class="menu-icon" width="20px" height="20px" radius="4px" />
+                            <gc-skeleton width="8rem" height="0.9rem" />
+                        </div>
+                    }
+                </div>
+            }
+        }
         @for (group of gamesStore.gameMenu(); track group.title) {
             <div class="menu-group">
                 <div class="menu-group-title">{{ group.title }}</div>
