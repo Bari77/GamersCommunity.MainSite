@@ -18,6 +18,7 @@
             type="modal-zoomin"
         ></nb-search>
         <button
+            #gamesPopover="nbPopover"
             [nbPopover]="gamesMenuTemplate"
             nbPopoverTrigger="click"
             nbPopoverPlacement="bottom"
@@ -138,7 +139,11 @@
                 <div class="menu-group-title">{{ group.title }}</div>
 
                 @for (item of group.children; track item.title) {
-                    <button type="button" (click)="redirect(item.link || item.url || '/home')" class="menu-item">
+                    <button
+                        type="button"
+                        (click)="gamesPopover.hide(); redirect(item.link || item.url || '/home')"
+                        class="menu-item"
+                    >
                         @if (item.icon) {
                             <img [src]="item.icon" width="20" height="20" class="menu-icon" alt="" />
                         }
