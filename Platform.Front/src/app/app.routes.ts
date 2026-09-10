@@ -19,6 +19,7 @@ export const appRoutes: Routes = [
     },
     {
         path: "events",
+        data: { breadcrumb: $localize`:@@core.breadcrumb.events:Events` },
         loadChildren: () => import("./features/events/events.routes").then((r) => r.eventsRoutes),
     },
     {
@@ -31,11 +32,13 @@ export const appRoutes: Routes = [
     },
     {
         path: "moderation",
+        data: { breadcrumb: $localize`:@@core.breadcrumb.moderation:Moderation` },
         loadChildren: () => import("./features/moderation/moderation.routes").then((r) => r.moderationRoutes),
     },
     {
         path: "world-of-warcraft",
         component: GameRemoteShellComponent,
+        data: { breadcrumb: "World of Warcraft" },
         loadChildren: () => loadRemoteRoutes("worldOfWarcraft", "./Routes", "worldOfWarcraftRoutes"),
     },
     {

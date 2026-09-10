@@ -8,6 +8,7 @@ export const eventsRoutes: Routes = [
     },
     {
         path: ":publicId",
+        data: { breadcrumb: $localize`:@@core.breadcrumb.event:Event` },
         loadComponent: () =>
             import("./pages/event-detail/event-detail.component").then((m) => m.EventDetailComponent),
     },

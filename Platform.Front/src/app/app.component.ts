@@ -6,6 +6,7 @@ import { MuteBannerComponent } from "@features/moderation/components/mute-banner
 import { MessengerDockComponent } from "@features/social/components/messenger-dock/messenger-dock.component";
 import { MessengerRealtimeService } from "@features/social/services/messenger-realtime.service";
 import { PresenceHeartbeatService } from "@features/users/services/presence-heartbeat.service";
+import { BreadcrumbComponent } from "@bari77/gc-ui";
 import { NbAuthOAuth2JWTToken, NbAuthService } from "@nebular/auth";
 import { NbLayoutModule } from "@nebular/theme";
 import { firstValueFrom, interval, map } from "rxjs";
@@ -20,11 +21,14 @@ import { firstValueFrom, interval, map } from "rxjs";
         FooterComponent,
         MessengerDockComponent,
         MuteBannerComponent,
+        BreadcrumbComponent,
     ],
     templateUrl: "./app.component.html",
     styleUrl: "./app.component.scss",
 })
 export class AppComponent {
+    protected readonly homeLabel = $localize`:@@core.breadcrumb.home:Home`;
+
     private readonly authService = inject(NbAuthService);
     private readonly messengerRealtime = inject(MessengerRealtimeService);
     private readonly presenceHeartbeat = inject(PresenceHeartbeatService);
