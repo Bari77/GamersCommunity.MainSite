@@ -336,32 +336,20 @@ export class UsersStore {
     }
 
     private getMenuItems(): NbMenuItem[] {
-        const result: NbMenuItem[] = [
+        return [
             {
                 data: "profile",
                 link: "/users/profile",
                 title: $localize`:@@core.header.menu.profile:Profile`,
                 icon: "person-outline",
             },
+            {
+                data: "logout",
+                link: "/users/logout",
+                title: $localize`:@@core.header.menu.logout:Logout`,
+                icon: "power-outline",
+            },
         ];
-
-        if (this.permissionsService.isStaff()) {
-            result.push({
-                data: "moderation",
-                link: "/moderation/users",
-                title: $localize`:@@core.header.menu.moderation:Moderation`,
-                icon: "shield-outline",
-            });
-        }
-
-        result.push({
-            data: "logout",
-            link: "/users/logout",
-            title: $localize`:@@core.header.menu.logout:Logout`,
-            icon: "power-outline",
-        });
-
-        return result;
     }
 
     private buildAuthorizeNextPath(): string {
